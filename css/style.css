@@ -1,0 +1,324 @@
+:root {
+    --texto-principal: #333;
+    --texto-suave: #666;
+    --fondo-claro: #f9f9f9;
+    --color-borde: #eaeaea;
+    --lila-pastel: #a881e6;
+    
+    --gradiente-cian: linear-gradient(135deg, #37c5e561 0%, #3a7bd5 100%);
+    --gradiente-morado: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    --gradiente-boton: linear-gradient(90deg, #d4a5ff 0%, #ff9a9e 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #fff;
+    color: var(--texto-principal);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.boton {
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.boton:hover {
+    transform: scale(1.05);
+}
+
+.boton-principal {
+    background: var(--gradiente-cian);
+    color: white;
+    opacity: 0;
+    animation: aparecerDesdeAbajo 1s ease-out 0.5s forwards;
+}
+
+.boton-principal:hover {
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+}
+
+.boton-gradiente {
+    background: var(--gradiente-boton);
+    color: white;
+}
+
+.boton-gradiente-claro {
+    background: var(--gradiente-morado);
+    color: white;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+}
+
+
+.barra-navegacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    border-bottom: 2px solid var(--color-borde);
+}
+
+.logotipo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--lila-pastel);
+}
+
+.logotipo img {
+    height: 40px;
+}
+
+.logotipo span {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+.enlaces-navegacion {
+    display: flex;
+    gap: 35px;
+    margin-left: auto;
+    margin-right: 50px;
+}
+
+.enlaces-navegacion a {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texto-suave);
+    transition: color 0.3s ease;
+}
+
+.enlaces-navegacion a:hover {
+    color: var(--lila-pastel);
+}
+
+.acciones-usuario {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var(--texto-suave);
+}
+
+
+.seccion-principal {
+    background-image: url('../img/hero-bg.jpg'); 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.seccion-principal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.contenido-principal {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    color: white;
+}
+
+.contenido-principal h1 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    animation: aparecerDesdeAbajo 1s ease-out forwards;
+}
+
+.categorias, .productos-destacados {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 60px 5%;
+}
+
+.tarjeta {
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+
+.tarjeta-categoria {
+    width: 350px;
+    padding: 30px 20px;
+    border: 2px solid #a9acac;
+}
+
+.tarjeta-cian {
+    background: var(--gradiente-cian);
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+}
+
+
+.tarjeta-producto {
+    width: 250px;
+    padding: 20px;
+    background-color: #fafafa;
+    border: 2px solid #a9acac;
+}
+
+
+.tarjeta img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    transition: transform 0.4s ease;
+}
+
+
+.tarjeta:hover {
+    transform: translateY(-10px);
+}
+
+.tarjeta-cian:hover {
+    box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4);
+}
+
+.tarjeta-producto:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.tarjeta:hover img {
+    transform: scale(1.1);
+}
+
+
+.tarjeta-categoria h3 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.tarjeta-producto h4 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    color: #444;
+    height: 40px; 
+}
+
+
+.pie-pagina {
+    background-color: var(--fondo-claro);
+    padding: 50px 10%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    border-top: 1px solid var(--color-borde);
+}
+
+.logo-pie {
+    text-align: center;
+    color: var(--lila-pastel);
+}
+
+.logo-pie img {
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.logo-pie h3 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.enlaces-pie ul {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.enlaces-pie li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+}
+
+.suscripcion-pie form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.suscripcion-pie input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.iconos-redes {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    font-size: 1.5rem;
+}
+
+.iconos-redes a:nth-child(1) { color: #3b5998; }
+.iconos-redes a:nth-child(2) { color: #e1306c; } 
+.iconos-redes a:nth-child(3) { color: #25d366; } 
+
+@keyframes aparecerDesdeAbajo {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
