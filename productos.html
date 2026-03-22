@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos | El Enemigos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/advanced-features.js"></script>
+</head>
+<body>
+
+    <header class="barra-navegacion">
+        <div class="logotipo">
+            <img src="img/logo.png" alt="Logo El Enemigos">
+            <span>EL ENEMIGOS</span>
+        </div>
+        <nav class="enlaces-navegacion">
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="acciones-usuario">
+            <a href="wishlist.html" class="wishlist-link">
+                <i class="fa-solid fa-heart"></i>
+                <span class="contador-wishlist" style="display: none;">0</span>
+            </a>
+            <a href="#"><i class="fa-solid fa-user"></i></a>
+            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
+        </div>
+        <button class="menu-toggle" aria-label="Menú de navegación">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </header>
+
+    <section class="seccion-principal">
+        <div class="contenido-principal">
+            <h1>NUESTROS PRODUCTOS</h1>
+            <p>Descubre nuestra amplia gama de juegos, consolas y accesorios gaming</p>
+        </div>
+    </section>
+
+    <section class="productos-catalogo">
+        <div class="filtros">
+            <button class="filtro-activo" data-categoria="todos">Todos</button>
+            <button data-categoria="juegos">Juegos</button>
+            <button data-categoria="consolas">Consolas</button>
+            <button data-categoria="accesorios">Accesorios</button>
+        </div>
+
+        <div class="barra-busqueda">
+            <input type="text" id="busqueda" placeholder="Buscar productos...">
+            <i class="fa-solid fa-search"></i>
+        </div>
+
+        <div class="grid-productos" id="productos-container">
+            <!-- Juegos -->
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="1">
+                <img src="img/apex.jpg" alt="Apex Legends">
+                <h4>Apex Legends: Deluxe Edition</h4>
+                <p class="precio">$59.99</p>
+                <div class="botones-producto">
+                    <a href="producto-detalle.html?id=1" class="boton boton-gradiente-claro">Ver Detalles</a>
+                    <button onclick="agregarAlCarrito(1)" class="boton boton-gradiente">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="2">
+                <img src="img/death stranding.png" alt="Death Stranding">
+                <h4>Death Stranding: Deluxe Edition</h4>
+                <p class="precio">$49.99</p>
+                <a href="producto-detalle.html?id=2" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(2)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="3">
+                <img src="img/cyberpunk.jpg" alt="Cyberpunk 2077" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Cyberpunk+2077'">
+                <h4>Cyberpunk 2077</h4>
+                <p class="precio">$39.99</p>
+                <a href="producto-detalle.html?id=3" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(3)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="4">
+                <img src="img/fifa.jpg" alt="FIFA 24" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=FIFA+24'">
+                <h4>FIFA 24</h4>
+                <p class="precio">$69.99</p>
+                <a href="producto-detalle.html?id=4" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(4)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="5">
+                <img src="img/gta.jpg" alt="GTA V" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Grand+Theft+Auto+V'">
+                <h4>Grand Theft Auto V</h4>
+                <p class="precio">$29.99</p>
+                <a href="producto-detalle.html?id=5" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(5)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="juegos" data-id="6">
+                <img src="img/the-last-of-us.jpg" alt="The Last of Us Part II" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=The+Last+of+Us+II'">
+                <h4>The Last of Us Part II</h4>
+                <p class="precio">$49.99</p>
+                <a href="producto-detalle.html?id=6" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(6)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+
+            <!-- Consolas -->
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="7">
+                <img src="img/ps5.png" alt="PlayStation 5">
+                <h4>PlayStation 5</h4>
+                <p class="precio">$499.99</p>
+                <a href="producto-detalle.html?id=7" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(7)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="8">
+                <img src="img/xbox-series-x.jpg" alt="Xbox Series X" onerror="this.src='https://via.placeholder.com/250x250/107C10/FFFFFF?text=Xbox+Series+X'">
+                <h4>Xbox Series X</h4>
+                <p class="precio">$499.99</p>
+                <a href="producto-detalle.html?id=8" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(8)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="9">
+                <img src="img/nintendo-switch.jpg" alt="Nintendo Switch OLED" onerror="this.src='https://via.placeholder.com/250x250/E60012/FFFFFF?text=Nintendo+Switch+OLED'">
+                <h4>Nintendo Switch OLED</h4>
+                <p class="precio">$349.99</p>
+                <a href="producto-detalle.html?id=9" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(9)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+
+            <!-- Accesorios -->
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="10">
+                <img src="img/headset.png" alt="Gaming Headset RGB">
+                <h4>SteelSeries Arctis Pro</h4>
+                <p class="precio">$249.99</p>
+                <a href="producto-detalle.html?id=10" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(10)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="11">
+                <img src="img/monitor-gaming.jpg" alt="Gaming Monitor 144Hz" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Monitor+Gaming+144Hz'">
+                <h4>ASUS TUF Gaming VG289Q</h4>
+                <p class="precio">$399.99</p>
+                <a href="producto-detalle.html?id=11" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(11)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="12">
+                <img src="img/teclado-mecanico.jpg" alt="Mechanical Gaming Keyboard" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Teclado+Mecánico'">
+                <h4>Logitech G915 TKL</h4>
+                <p class="precio">$249.99</p>
+                <a href="producto-detalle.html?id=12" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(12)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="13">
+                <img src="img/mouse-gaming.jpg" alt="Gaming Mouse RGB" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Mouse+Gaming'">
+                <h4>Razer DeathAdder V2 Pro</h4>
+                <p class="precio">$149.99</p>
+                <a href="producto-detalle.html?id=13" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(13)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="14">
+                <img src="img/silla-gaming.jpg" alt="Gaming Chair RGB" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Silla+Gaming'">
+                <h4>Secretlab Titan Evo</h4>
+                <p class="precio">$499.99</p>
+                <a href="producto-detalle.html?id=14" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(14)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="15">
+                <img src="img/alfombrilla.jpg" alt="Gaming Mouse Pad XXL" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Alfombrilla+Gaming'">
+                <h4>SteelSeries QcK XXL</h4>
+                <p class="precio">$49.99</p>
+                <a href="producto-detalle.html?id=15" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(15)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+                <a href="producto-detalle.html?id=6" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(6)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+
+            <!-- Consolas -->
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="7">
+                <img src="img/ps5 vertical.png" alt="PlayStation 5">
+                <h4>PlayStation 5</h4>
+                <p class="precio">$499.99</p>
+                <a href="producto-detalle.html?id=7" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(7)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="8">
+                <img src="img/xbox-series-x.jpg" alt="Xbox Series X">
+                <h4>Xbox Series X</h4>
+                <p class="precio">$499.99</p>
+                <a href="producto-detalle.html?id=8" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(8)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="9">
+                <img src="img/nintendo-switch.jpg" alt="Nintendo Switch OLED">
+                <h4>Nintendo Switch OLED</h4>
+                <p class="precio">$349.99</p>
+                <a href="producto-detalle.html?id=9" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(9)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="consolas" data-id="10">
+                <img src="img/ps4.jpg" alt="PlayStation 4">
+                <h4>PlayStation 4</h4>
+                <p class="precio">$299.99</p>
+                <a href="producto-detalle.html?id=10" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(10)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+
+            <!-- Accesorios -->
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="11">
+                <img src="img/headset.png" alt="Headset Gaming">
+                <h4>Headset Gaming RGB</h4>
+                <p class="precio">$89.99</p>
+                <a href="producto-detalle.html?id=11" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(11)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="12">
+                <img src="img/teclado-mecanico.jpg" alt="Teclado Mecánico">
+                <h4>Teclado Mecánico Gaming</h4>
+                <p class="precio">$129.99</p>
+                <a href="producto-detalle.html?id=12" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(12)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="13">
+                <img src="img/mouse-gaming.jpg" alt="Mouse Gaming">
+                <h4>Mouse Gaming RGB</h4>
+                <p class="precio">$79.99</p>
+                <a href="producto-detalle.html?id=13" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(13)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="14">
+                <img src="img/monitor-gaming.jpg" alt="Monitor Gaming">
+                <h4>Monitor Gaming 144Hz</h4>
+                <p class="precio">$299.99</p>
+                <a href="producto-detalle.html?id=14" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(14)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+            <div class="tarjeta tarjeta-producto" data-categoria="accesorios" data-id="15">
+                <img src="img/silla-gaming.jpg" alt="Silla Gaming">
+                <h4>Silla Gaming Ergonomica</h4>
+                <p class="precio">$249.99</p>
+                <a href="producto-detalle.html?id=15" class="boton boton-gradiente-claro">Ver Detalles</a>
+                <button onclick="agregarAlCarrito(15)" class="boton boton-gradiente">Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <div class="paginacion">
+            <button class="pagina-btn" data-pagina="1">1</button>
+            <button class="pagina-btn" data-pagina="2">2</button>
+            <button class="pagina-btn" data-pagina="3">3</button>
+        </div>
+    </section>
+
+    <footer class="pie-pagina">
+        <div class="logo-pie">
+            <img src="img/logo.png" alt="Logo">
+            <h3>EL ENEMIGOS</h3>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Enlaces Rápidos</h4>
+            <ul>
+                <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="#">Preguntas Frecuentes</a></li>
+                <li><a href="#">Soporte Técnico</a></li>
+                <li><a href="#">Comunidad</a></li>
+                <li><a href="#">Nuevos Lanzamientos</a></li>
+            </ul>
+        </div>
+        <div class="suscripcion-pie">
+            <h4>Suscríbete</h4>
+            <form action="#">
+                <input type="email" placeholder="Ingresa tu Correo">
+                <button type="submit" class="boton boton-gradiente-claro">Enviar</button>
+            </form>
+        </div>
+        <div class="redes-sociales-pie">
+            <h4>Redes Sociales</h4>
+            <div class="iconos-redes">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    <script>
+        // Catalogo de productos ahora carga dinámicamente mediante js/main.js y la API.
+        // El script de filtro/paginación ya está centralizado en el código de main.js.
+    </script>
+
+</body>
+</html>

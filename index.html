@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/advanced-features.js"></script>
 </head>
 <body>
 
@@ -17,15 +20,24 @@
             <span>EL ENEMIGOS</span>
         </div>
         <nav class="enlaces-navegacion">
-            <a href="#">Inicio</a>
-            <a href="#">Productos</a>
-            <a href="#">Nosotros</a>
-            <a href="#">Contacto</a>
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
         </nav>
         <div class="acciones-usuario">
+            <a href="wishlist.html" class="wishlist-link">
+                <i class="fa-solid fa-heart"></i>
+                <span class="contador-wishlist" style="display: none;">0</span>
+            </a>
             <a href="#"><i class="fa-solid fa-user"></i></a>
-            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 3 Items</a>
+            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
         </div>
+        <button class="menu-toggle" aria-label="Menú de navegación">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
     </header>
 
     <section class="seccion-principal">
@@ -57,17 +69,32 @@
         <div class="tarjeta tarjeta-producto">
             <img src="img/apex.jpg" alt="Apex Legends">
             <h4>Apex Legends: Deluxe Edition</h4>
-            <a href="#" class="boton boton-gradiente-claro">Añadir al carrito</a>
+            <a href="producto-detalle.html?id=1" class="boton boton-gradiente-claro">Ver Detalles</a>
         </div>
         <div class="tarjeta tarjeta-producto">
-            <img src="img/ps5 vertical.png" alt="PlayStation 5 vertical">
+            <img src="img/ps5.png" alt="PlayStation 5">
             <h4>PlayStation 5</h4>
-            <a href="#" class="boton boton-gradiente-claro">Añadir al carrito</a>
+            <a href="producto-detalle.html?id=7" class="boton boton-gradiente-claro">Ver Detalles</a>
         </div>
         <div class="tarjeta tarjeta-producto">
             <img src="img/death stranding.png" alt="Death Stranding">
             <h4>Death Stranding: Deluxe Edition</h4>
-            <a href="#" class="boton boton-gradiente-claro">Añadir al carrito</a>
+            <a href="producto-detalle.html?id=2" class="boton boton-gradiente-claro">Ver Detalles</a>
+        </div>
+        <div class="tarjeta tarjeta-producto">
+            <img src="img/headset.png" alt="Gaming Headset">
+            <h4>SteelSeries Arctis Pro</h4>
+            <a href="producto-detalle.html?id=10" class="boton boton-gradiente-claro">Ver Detalles</a>
+        </div>
+        <div class="tarjeta tarjeta-producto">
+            <img src="img/xbox-series-x.jpg" alt="Xbox Series X" onerror="this.src='https://via.placeholder.com/250x250/107C10/FFFFFF?text=Xbox+Series+X'">
+            <h4>Xbox Series X</h4>
+            <a href="producto-detalle.html?id=8" class="boton boton-gradiente-claro">Ver Detalles</a>
+        </div>
+        <div class="tarjeta tarjeta-producto">
+            <img src="img/monitor-gaming.jpg" alt="Gaming Monitor" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=Monitor+Gaming'">
+            <h4>ASUS TUF Gaming VG289Q</h4>
+            <a href="producto-detalle.html?id=11" class="boton boton-gradiente-claro">Ver Detalles</a>
         </div>
     </section>
 
@@ -79,26 +106,43 @@
         <div class="enlaces-pie">
             <h4>Enlaces Rápidos</h4>
             <ul>
-                <li><a href="#">Sobre Nosotros</a></li>
-                <li><a href="#">Preguntas Frecuentes</a></li>
-                <li><a href="#">Soporte Técnico</a></li>
-                <li><a href="#">Comunidad</a></li>
+                <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="productos.html">Catálogo Completo</a></li>
+                <li><a href="#">Ofertas Especiales</a></li>
                 <li><a href="#">Nuevos Lanzamientos</a></li>
+                <li><a href="#">Guías de Compra</a></li>
+                <li><a href="#">Blog Gaming</a></li>
+            </ul>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Soporte</h4>
+            <ul>
+                <li><a href="contacto.html">Centro de Ayuda</a></li>
+                <li><a href="#">Envíos y Devoluciones</a></li>
+                <li><a href="#">Garantías</a></li>
+                <li><a href="#">Seguimiento de Pedidos</a></li>
+                <li><a href="#">Política de Privacidad</a></li>
+                <li><a href="#">Términos y Condiciones</a></li>
             </ul>
         </div>
         <div class="suscripcion-pie">
-            <h4>Suscríbete</h4>
+            <h4>Suscríbete a Nuestro Newsletter</h4>
+            <p>Recibe las últimas novedades, ofertas exclusivas y consejos gaming</p>
             <form action="#">
-                <input type="email" placeholder="Ingresa tu Correo">
-                <button type="submit" class="boton boton-gradiente-claro">Enviar</button>
+                <input type="email" placeholder="Tu email aquí" required>
+                <button type="submit" class="boton boton-gradiente-claro">Suscribirme</button>
             </form>
         </div>
         <div class="redes-sociales-pie">
-            <h4>Redes Sociales</h4>
+            <h4>Síguenos</h4>
+            <p>Únete a nuestra comunidad gaming</p>
             <div class="iconos-redes">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         </div>
     </footer>

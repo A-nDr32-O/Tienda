@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Wishlist | El Enemigos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/advanced-features.js"></script>
+</head>
+<body>
+
+    <header class="barra-navegacion">
+        <div class="logotipo">
+            <img src="img/logo.png" alt="Logo El Enemigos">
+            <span>EL ENEMIGOS</span>
+        </div>
+        <nav class="enlaces-navegacion">
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="acciones-usuario">
+            <a href="#" class="wishlist-link">
+                <i class="fa-solid fa-heart"></i>
+                <span class="contador-wishlist" style="display: none;">0</span>
+            </a>
+            <a href="#"><i class="fa-solid fa-user"></i></a>
+            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
+        </div>
+        <button class="menu-toggle" aria-label="Menú de navegación">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </header>
+
+    <section class="seccion-principal">
+        <div class="contenido-principal">
+            <h1>MI WISHLIST</h1>
+            <p>Productos que has guardado para comprar después</p>
+        </div>
+    </section>
+
+    <section class="wishlist-section">
+        <div class="contenedor-wishlist">
+            <div class="wishlist-header">
+                <h2>Productos Favoritos</h2>
+                <p id="contador-productos">0 productos en tu wishlist</p>
+            </div>
+
+            <div class="wishlist-grid" id="wishlist-container">
+                <!-- Los productos de wishlist se cargarán dinámicamente -->
+            </div>
+
+            <div class="wishlist-vacia" id="wishlist-vacia">
+                <div class="icono-vacio">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Tu wishlist está vacía</h3>
+                <p>Guarda productos que te interesen para comprarlos después</p>
+                <a href="productos.html" class="boton boton-gradiente">Explorar Productos</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="pie-pagina">
+        <div class="logo-pie">
+            <img src="img/logo.png" alt="Logo">
+            <h3>EL ENEMIGOS</h3>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Enlaces Rápidos</h4>
+            <ul>
+                <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="productos.html">Catálogo Completo</a></li>
+                <li><a href="#">Ofertas Especiales</a></li>
+                <li><a href="#">Nuevos Lanzamientos</a></li>
+                <li><a href="#">Guías de Compra</a></li>
+                <li><a href="#">Blog Gaming</a></li>
+            </ul>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Soporte</h4>
+            <ul>
+                <li><a href="contacto.html">Centro de Ayuda</a></li>
+                <li><a href="#">Envíos y Devoluciones</a></li>
+                <li><a href="#">Garantías</a></li>
+                <li><a href="#">Seguimiento de Pedidos</a></li>
+                <li><a href="#">Política de Privacidad</a></li>
+                <li><a href="#">Términos y Condiciones</a></li>
+            </ul>
+        </div>
+        <div class="suscripcion-pie">
+            <h4>Suscríbete a Nuestro Newsletter</h4>
+            <p>Recibe las últimas novedades, ofertas exclusivas y consejos gaming</p>
+            <form action="#">
+                <input type="email" placeholder="Tu email aquí" required>
+                <button type="submit" class="boton boton-gradiente-claro">Suscribirme</button>
+            </form>
+        </div>
+        <div class="redes-sociales-pie">
+            <h4>Síguenos</h4>
+            <p>Únete a nuestra comunidad gaming</p>
+            <div class="iconos-redes">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Base de datos de productos (igual que en otros archivos)
+        const productos = [
+            {
+                id: 1,
+                nombre: "Apex Legends: Deluxe Edition",
+                precio: 59.99,
+                imagen: "img/apex.jpg",
+                categoria: "juegos",
+                descripcion: "Únete a la batalla real definitiva con Apex Legends. Forma equipo con leyendas icónicas, domina habilidades únicas y lucha por la victoria en un mundo de acción intensa.",
+                especificaciones: [
+                    "Plataforma: PC, PlayStation, Xbox",
+                    "Modo: Battle Royale",
+                    "Jugadores: Hasta 60 por partida",
+                    "Desarrollador: Respawn Entertainment",
+                    "Idioma: Español, Inglés, Francés"
+                ]
+            },
+            {
+                id: 2,
+                nombre: "Death Stranding: Deluxe Edition",
+                precio: 49.99,
+                imagen: "img/death stranding.png",
+                categoria: "juegos",
+                descripcion: "En un mundo devastado por la Death Stranding, Sam Porter Bridges debe conectar los últimos reductos de humanidad. Una experiencia única que combina acción, exploración y conexión social.",
+                especificaciones: [
+                    "Plataforma: PC, PlayStation",
+                    "Género: Acción/Aventura",
+                    "Desarrollador: Kojima Productions",
+                    "Duración aproximada: 15-20 horas",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 3,
+                nombre: "Cyberpunk 2077",
+                precio: 39.99,
+                imagen: "img/cyberpunk.jpg",
+                categoria: "juegos",
+                descripcion: "Sumérgete en Night City, una megalópolis obsesionada con el poder, el glamour y la modificación corporal. Crea tu personaje y escribe tu propia historia en este mundo abierto.",
+                especificaciones: [
+                    "Plataforma: PC, PlayStation, Xbox",
+                    "Género: RPG de Acción",
+                    "Desarrollador: CD Projekt RED",
+                    "Tamaño del mundo: Más de 2000 km²",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 4,
+                nombre: "FIFA 24",
+                precio: 69.99,
+                imagen: "img/fifa.jpg",
+                categoria: "juegos",
+                descripcion: "La experiencia futbolística definitiva. Juega con tus equipos favoritos, crea tu club de ensueño y vive la emoción del fútbol con gráficos hiperrealistas y jugabilidad innovadora.",
+                especificaciones: [
+                    "Plataforma: PC, PlayStation, Xbox, Nintendo Switch",
+                    "Modo: Carrera, Ultimate Team, Pro Clubs",
+                    "Licencias oficiales: Todas las ligas principales",
+                    "Modo online: Sí",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 5,
+                nombre: "Grand Theft Auto V",
+                precio: 29.99,
+                imagen: "img/gta.jpg",
+                categoria: "juegos",
+                descripcion: "Los Santos: una extensa y soleada metrópolis llena de gurús de autoayuda, estrellas de cine y millonarios. Tres criminales muy diferentes planean sus próximos golpes.",
+                especificaciones: [
+                    "Plataforma: PC, PlayStation, Xbox",
+                    "Género: Acción/Aventura",
+                    "Modo historia: 3 protagonistas",
+                    "Modo GTA Online: Multijugador",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 6,
+                nombre: "The Last of Us Part II",
+                precio: 49.99,
+                imagen: "img/the-last-of-us.jpg",
+                categoria: "juegos",
+                descripcion: "Cinco años después de los eventos del primer juego, Ellie y Joel se establecen en Wyoming. La vida es dura pero predecible hasta que un encuentro violento cambia todo.",
+                especificaciones: [
+                    "Plataforma: PlayStation",
+                    "Género: Acción/Aventura",
+                    "Duración aproximada: 15-20 horas",
+                    "Desarrollador: Naughty Dog",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 7,
+                nombre: "PlayStation 5",
+                precio: 499.99,
+                imagen: "img/ps5 vertical.png",
+                categoria: "consolas",
+                descripcion: "La consola de nueva generación de Sony. Experimenta juegos con gráficos 4K ultra realistas, tiempos de carga ultrarrápidos y una nueva forma de jugar con el mando DualSense.",
+                especificaciones: [
+                    "CPU: AMD Zen 2 de 8 núcleos a 3.5GHz",
+                    "GPU: 10.28 TFLOPs, 36 CUs a 2.23GHz",
+                    "Memoria: 16GB GDDR6/256-bit",
+                    "Almacenamiento: 825GB SSD personalizado",
+                    "Resolución: Hasta 8K"
+                ]
+            },
+            {
+                id: 8,
+                nombre: "Xbox Series X",
+                precio: 499.99,
+                imagen: "img/xbox-series-x.jpg",
+                categoria: "consolas",
+                descripcion: "La consola más potente de Microsoft. Disfruta de juegos en 4K a 120 FPS, Quick Resume para cambiar entre juegos al instante y Smart Delivery para actualizaciones gratuitas.",
+                especificaciones: [
+                    "CPU: AMD Zen 2 de 8 núcleos a 3.8GHz",
+                    "GPU: 12 TFLOPs, 52 CUs a 1.825GHz",
+                    "Memoria: 16GB GDDR6",
+                    "Almacenamiento: 1TB NVMe SSD",
+                    "Resolución: Hasta 8K"
+                ]
+            },
+            {
+                id: 9,
+                nombre: "Nintendo Switch OLED",
+                precio: 349.99,
+                imagen: "img/nintendo-switch-oled.jpg",
+                categoria: "consolas",
+                descripcion: "La versátil consola híbrida de Nintendo con pantalla OLED de 7 pulgadas. Juega en casa con la base o llévala contigo para gaming portátil de alta calidad.",
+                especificaciones: [
+                    "Pantalla: OLED de 7 pulgadas (1280x720)",
+                    "CPU/GPU: NVIDIA Custom Tegra",
+                    "Memoria: 4GB LPDDR4",
+                    "Almacenamiento: 64GB",
+                    "Batería: Hasta 9 horas"
+                ]
+            },
+            {
+                id: 10,
+                nombre: "PlayStation 4",
+                precio: 299.99,
+                imagen: "img/ps4.jpg",
+                categoria: "consolas",
+                descripcion: "La consola que revolucionó el gaming. Con miles de juegos disponibles, PlayStation 4 ofrece entretenimiento de alta calidad para toda la familia.",
+                especificaciones: [
+                    "CPU: AMD Jaguar de 8 núcleos",
+                    "GPU: 1.84 TFLOPs",
+                    "Memoria: 8GB GDDR5",
+                    "Almacenamiento: 500GB HDD",
+                    "Resolución: Hasta 4K"
+                ]
+            },
+            {
+                id: 11,
+                nombre: "Headset Gaming RGB",
+                precio: 89.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Audífonos gaming con iluminación RGB, micrófono desmontable y sonido envolvente 7.1. Perfectos para gaming competitivo y streaming.",
+                especificaciones: [
+                    "Tipo: Over-ear",
+                    "Conectividad: USB 3.5mm",
+                    "Iluminación: RGB personalizable",
+                    "Micrófono: Desmontable con cancelación de ruido",
+                    "Frecuencia: 20Hz - 20kHz"
+                ]
+            },
+            {
+                id: 12,
+                nombre: "Teclado Mecánico Gaming",
+                precio: 129.99,
+                imagen: "img/teclado-mecanico.jpg",
+                categoria: "accesorios",
+                descripcion: "Teclado mecánico con switches Cherry MX Red, iluminación RGB por tecla y construcción de aluminio. Ideal para gaming y escritura prolongada.",
+                especificaciones: [
+                    "Tipo: Mecánico",
+                    "Switches: Cherry MX Red",
+                    "Iluminación: RGB por tecla",
+                    "Conectividad: USB",
+                    "Layout: QWERTY Español"
+                ]
+            },
+            {
+                id: 13,
+                nombre: "Mouse Gaming RGB",
+                precio: 79.99,
+                imagen: "img/mouse-gaming.jpg",
+                categoria: "accesorios",
+                descripcion: "Mouse gaming ergonómico con sensor óptico de alta precisión, iluminación RGB y botones programables. DPI ajustable hasta 16000.",
+                especificaciones: [
+                    "Sensor: Óptico PixArt 3335",
+                    "DPI: 200-16000",
+                    "Botones: 6 programables",
+                    "Iluminación: RGB",
+                    "Peso: 85g"
+                ]
+            },
+            {
+                id: 14,
+                nombre: "Monitor Gaming 144Hz",
+                precio: 299.99,
+                imagen: "img/monitor-gaming.jpg",
+                categoria: "accesorios",
+                descripcion: "Monitor gaming de 27 pulgadas con frecuencia de 144Hz, tiempo de respuesta de 1ms y tecnología G-Sync. Perfecto para gaming competitivo.",
+                especificaciones: [
+                    "Tamaño: 27 pulgadas",
+                    "Resolución: 2560x1440 (QHD)",
+                    "Frecuencia: 144Hz",
+                    "Tiempo de respuesta: 1ms",
+                    "Tecnología: G-Sync"
+                ]
+            },
+            {
+                id: 15,
+                nombre: "Silla Gaming Ergonómica",
+                precio: 249.99,
+                imagen: "img/silla-gaming.jpg",
+                categoria: "accesorios",
+                descripcion: "Silla gaming ergonómica con ajuste de altura, reposabrazos ajustables y soporte lumbar. Tapizada en PU con diseño moderno.",
+                especificaciones: [
+                    "Material: PU + Malla",
+                    "Ajustes: Altura, reposabrazos, lumbar",
+                    "Peso máximo: 150kg",
+                    "Inclinación: Hasta 180°",
+                    "Garantía: 2 años"
+                ]
+            }
+        ];
+
+        // Función para cargar la wishlist
+        function cargarWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            const contenedor = document.getElementById('wishlist-container');
+            const contador = document.getElementById('contador-productos');
+            const vacia = document.getElementById('wishlist-vacia');
+
+            contador.textContent = `${wishlist.length} productos en tu wishlist`;
+
+            if (wishlist.length === 0) {
+                contenedor.style.display = 'none';
+                vacia.style.display = 'block';
+                return;
+            }
+
+            contenedor.style.display = 'grid';
+            vacia.style.display = 'none';
+
+            contenedor.innerHTML = '';
+
+            wishlist.forEach(productId => {
+                const producto = productos.find(p => p.id == productId);
+                if (producto) {
+                    const div = document.createElement('div');
+                    div.className = 'tarjeta tarjeta-producto';
+                    div.setAttribute('data-id', producto.id);
+                    div.innerHTML = `
+                        <button class="btn-wishlist active" onclick="toggleWishlist(${producto.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=${encodeURIComponent(producto.nombre)}'">
+                        <h4>${producto.nombre}</h4>
+                        <p class="precio">$${producto.precio}</p>
+                        <div class="botones-producto">
+                            <a href="producto-detalle.html?id=${producto.id}" class="boton boton-gradiente-claro">Ver Detalles</a>
+                            <button onclick="agregarAlCarrito(${producto.id})" class="boton boton-gradiente">Añadir al Carrito</button>
+                        </div>
+                    `;
+                    contenedor.appendChild(div);
+                }
+            });
+        }
+
+        // Función para agregar al carrito (desde main.js)
+        function agregarAlCarrito(productId) {
+            const producto = productos.find(p => p.id == productId);
+            if (producto && window.carrito) {
+                window.carrito.agregarProducto(productId, 1);
+                mostrarNotificacion('Producto agregado al carrito', 'success');
+            }
+        }
+
+        // Cargar wishlist al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarWishlist();
+        });
+
+        // Actualizar wishlist cuando cambie el localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'wishlist') {
+                cargarWishlist();
+            }
+        });
+    </script>
+
+</body>
+</html>

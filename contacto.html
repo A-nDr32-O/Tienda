@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | El Enemigos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+
+    <header class="barra-navegacion">
+        <div class="logotipo">
+            <img src="img/logo.png" alt="Logo El Enemigos">
+            <span>EL ENEMIGOS</span>
+        </div>
+        <nav class="enlaces-navegacion">
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="acciones-usuario">
+            <a href="#"><i class="fa-solid fa-user"></i></a>
+            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
+        </div>
+        <button class="menu-toggle" aria-label="Menú de navegación">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </header>
+
+    <section class="seccion-principal">
+        <div class="contenido-principal">
+            <h1>CONTÁCTANOS</h1>
+            <p>¿Tienes alguna pregunta? Estamos aquí para ayudarte</p>
+        </div>
+    </section>
+
+    <section class="contacto">
+        <div class="contenedor-contacto">
+            <div class="info-contacto">
+                <h2>Información de Contacto</h2>
+                <div class="info-item">
+                    <i class="fa-solid fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Dirección</h3>
+                        <p>Calle Gran Vía, 45<br>28013 Madrid, España</p>
+                        <p class="info-extra">Metro: Plaza de España (L3, L10)<br>Parking disponible en zona azul</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h3>Teléfono</h3>
+                        <p>+34 910 123 456</p>
+                        <p class="info-extra">Lun-Vie: 10:00-14:00 / 16:00-20:00<br>Sáb: 10:00-14:00 / 16:00-20:00</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-mobile-alt"></i>
+                    <div>
+                        <h3>WhatsApp</h3>
+                        <p>+34 650 987 654</p>
+                        <p class="info-extra">Respuesta inmediata<br>Consultas urgentes</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>info@elenemigos.com</p>
+                        <p class="info-extra">Respuesta en 24h<br>soporte@elenemigos.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h3>Horario de Tienda</h3>
+                        <p><strong>Lunes a Viernes:</strong><br>10:00 - 14:00 / 16:00 - 20:00</p>
+                        <p><strong>Sábados:</strong><br>10:00 - 14:00 / 16:00 - 20:00</p>
+                        <p><strong>Domingos:</strong><br>Cerrado (servicio online disponible)</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-truck"></i>
+                    <div>
+                        <h3>Envíos</h3>
+                        <p>Envío gratuito en compras +50€</p>
+                        <p class="info-extra">Península: 24-48h<br>Islas: 48-72h<br>Europa: 3-5 días</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formulario-contacto">
+                <h2>Envíanos un Mensaje</h2>
+                <form action="#" method="post">
+                    <div class="campo-formulario">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="asunto">Asunto *</label>
+                        <input type="text" id="asunto" name="asunto" required>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="mensaje">Mensaje *</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="boton boton-gradiente">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mapa de ubicación -->
+        <div class="mapa-container">
+            <h2>Encuéntranos</h2>
+            <div class="mapa-wrapper">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.552!2d-3.6923!3d40.4168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sGran%20V%C3%ADa%2C%20Madrid!5e0!3m2!1ses!2ses!4v1703123456789!5m2!1ses!2ses"
+                    width="100%"
+                    height="400"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Ubicación de El Enemigos en Madrid">
+                </iframe>
+            </div>
+            <div class="info-mapa">
+                <div class="info-mapa-item">
+                    <i class="fa-solid fa-car"></i>
+                    <div>
+                        <h4>Transporte Público</h4>
+                        <p>Metro: Plaza de España (L3, L10)<br>Autobús: Líneas 1, 74, 146</p>
+                    </div>
+                </div>
+                <div class="info-mapa-item">
+                    <i class="fa-solid fa-parking"></i>
+                    <div>
+                        <h4>Aparcamiento</h4>
+                        <p>Zona azul disponible<br>Parking Saba Gran Vía (a 2 min)</p>
+                    </div>
+                </div>
+                <div class="info-mapa-item">
+                    <i class="fa-solid fa-wheelchair"></i>
+                    <div>
+                        <h4>Accesibilidad</h4>
+                        <p>Acceso para silla de ruedas<br>Ascensor disponible</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="pie-pagina">
+        <div class="logo-pie">
+            <img src="img/logo.png" alt="Logo">
+            <h3>EL ENEMIGOS</h3>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Enlaces Rápidos</h4>
+            <ul>
+                <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="#">Preguntas Frecuentes</a></li>
+                <li><a href="#">Soporte Técnico</a></li>
+                <li><a href="#">Comunidad</a></li>
+                <li><a href="#">Nuevos Lanzamientos</a></li>
+            </ul>
+        </div>
+        <div class="suscripcion-pie">
+            <h4>Suscríbete</h4>
+            <form action="#">
+                <input type="email" placeholder="Ingresa tu Correo">
+                <button type="submit" class="boton boton-gradiente-claro">Enviar</button>
+            </form>
+        </div>
+        <div class="redes-sociales-pie">
+            <h4>Redes Sociales</h4>
+            <div class="iconos-redes">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

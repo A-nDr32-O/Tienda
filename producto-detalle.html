@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto | El Enemigos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/advanced-features.js"></script>
+</head>
+<body>
+
+    <header class="barra-navegacion">
+        <div class="logotipo">
+            <img src="img/logo.png" alt="Logo El Enemigos">
+            <span>EL ENEMIGOS</span>
+        </div>
+        <nav class="enlaces-navegacion">
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="acciones-usuario">
+            <a href="wishlist.html" class="wishlist-link">
+                <i class="fa-solid fa-heart"></i>
+                <span class="contador-wishlist" style="display: none;">0</span>
+            </a>
+            <a href="#"><i class="fa-solid fa-user"></i></a>
+            <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
+        </div>
+        <button class="menu-toggle" aria-label="Menú de navegación">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </header>
+
+    <section class="detalle-producto">
+        <div class="contenedor-detalle">
+            <div class="imagen-producto">
+                <img id="imagen-producto" src="" alt="">
+            </div>
+            <div class="info-producto">
+                <h1 id="titulo-producto"></h1>
+                <p class="precio" id="precio-producto"></p>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-alt"></i>
+                    <span>(4.5/5)</span>
+                </div>
+                <p class="descripcion" id="descripcion-producto"></p>
+
+                <div class="especificaciones">
+                    <h3>Especificaciones</h3>
+                    <ul id="lista-especificaciones"></ul>
+                </div>
+
+                <div class="acciones-producto">
+                    <div class="cantidad">
+                        <button id="disminuir">-</button>
+                        <input type="number" id="cantidad" value="1" min="1" max="10">
+                        <button id="aumentar">+</button>
+                    </div>
+                    <button class="boton boton-gradiente" id="agregar-carrito">Añadir al Carrito</button>
+                    <button class="boton boton-gradiente-claro" id="comprar-ahora">Comprar Ahora</button>
+                </div>
+
+                <!-- Compartir en Redes Sociales -->
+                <div class="compartir-producto">
+                    <h3>Compartir este producto</h3>
+                    <div class="botones-compartir">
+                        <button class="btn-compartir" data-red="facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </button>
+                        <button class="btn-compartir" data-red="twitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </button>
+                        <button class="btn-compartir" data-red="whatsapp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button class="btn-compartir" data-red="telegram">
+                            <i class="fab fa-telegram-plane"></i> Telegram
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Reseñas -->
+        <div class="seccion-resenas">
+            <div class="contenedor-resenas">
+                <h2>Reseñas de Clientes</h2>
+
+                <!-- Formulario para agregar reseña -->
+                <div class="formulario-resena">
+                    <h3>Escribe tu reseña</h3>
+                    <form id="form-resena">
+                        <div class="campo-form">
+                            <label for="nombre">Nombre *</label>
+                            <input type="text" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="campo-form">
+                            <label>Calificación *</label>
+                            <div class="rating-input">
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+
+                        <div class="campo-form">
+                            <label for="titulo">Título de la reseña</label>
+                            <input type="text" id="titulo" name="titulo" placeholder="Resumen de tu experiencia">
+                        </div>
+
+                        <div class="campo-form">
+                            <label for="comentario">Comentario *</label>
+                            <textarea id="comentario" name="comentario" rows="4" required placeholder="Comparte tu experiencia con este producto..."></textarea>
+                        </div>
+
+                        <div class="campo-form checkbox">
+                            <label>
+                                <input type="checkbox" name="recomienda" id="recomienda">
+                                Recomiendo este producto
+                            </label>
+                        </div>
+
+                        <button type="submit" class="boton boton-gradiente">Publicar Reseña</button>
+                    </form>
+                </div>
+
+                <!-- Lista de reseñas -->
+                <div class="resenas-container">
+                    <!-- Las reseñas se cargarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <div class="productos-relacionados">
+            <h2>Productos Relacionados</h2>
+            <div class="grid-relacionados" id="productos-relacionados">
+                <!-- Los productos relacionados se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="pie-pagina">
+        <div class="logo-pie">
+            <img src="img/logo.png" alt="Logo">
+            <h3>EL ENEMIGOS</h3>
+        </div>
+        <div class="enlaces-pie">
+            <h4>Enlaces Rápidos</h4>
+            <ul>
+                <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="#">Preguntas Frecuentes</a></li>
+                <li><a href="#">Soporte Técnico</a></li>
+                <li><a href="#">Comunidad</a></li>
+                <li><a href="#">Nuevos Lanzamientos</a></li>
+            </ul>
+        </div>
+        <div class="suscripcion-pie">
+            <h4>Suscríbete</h4>
+            <form action="#">
+                <input type="email" placeholder="Ingresa tu Correo">
+                <button type="submit" class="boton boton-gradiente-claro">Enviar</button>
+            </form>
+        </div>
+        <div class="redes-sociales-pie">
+            <h4>Redes Sociales</h4>
+            <div class="iconos-redes">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Detalle de producto se renderiza dinámicamente desde js/main.js usando la API. -->
+
+</body>
+</html>
+            },
+            {
+                id: 6,
+                nombre: "The Last of Us Part II",
+                precio: 49.99,
+                imagen: "img/death stranding.png",
+                categoria: "juegos",
+                descripcion: "Cinco años después de los eventos del primer juego, Ellie y Joel se establecen en Wyoming. La vida es dura pero predecible hasta que un encuentro violento cambia todo.",
+                especificaciones: [
+                    "Plataforma: PlayStation",
+                    "Género: Acción/Aventura",
+                    "Duración aproximada: 15-20 horas",
+                    "Desarrollador: Naughty Dog",
+                    "Idioma: Español, Inglés"
+                ]
+            },
+            {
+                id: 7,
+                nombre: "PlayStation 5",
+                precio: 499.99,
+                imagen: "img/ps5 vertical.png",
+                categoria: "consolas",
+                descripcion: "La consola de nueva generación de Sony. Experimenta juegos con gráficos 4K ultra realistas, tiempos de carga ultrarrápidos y una nueva forma de jugar con el mando DualSense.",
+                especificaciones: [
+                    "CPU: AMD Zen 2 de 8 núcleos a 3.5GHz",
+                    "GPU: 10.28 TFLOPs, 36 CUs a 2.23GHz",
+                    "Memoria: 16GB GDDR6/256-bit",
+                    "Almacenamiento: 825GB SSD personalizado",
+                    "Resolución: Hasta 8K"
+                ]
+            },
+            {
+                id: 8,
+                nombre: "Xbox Series X",
+                precio: 499.99,
+                imagen: "img/ps5.png",
+                categoria: "consolas",
+                descripcion: "La consola más potente de Microsoft. Disfruta de juegos en 4K a 120 FPS, Quick Resume para cambiar entre juegos al instante y Smart Delivery para actualizaciones gratuitas.",
+                especificaciones: [
+                    "CPU: AMD Zen 2 de 8 núcleos a 3.8GHz",
+                    "GPU: 12 TFLOPs, 52 CUs a 1.825GHz",
+                    "Memoria: 16GB GDDR6",
+                    "Almacenamiento: 1TB NVMe SSD",
+                    "Resolución: Hasta 8K"
+                ]
+            },
+            {
+                id: 9,
+                nombre: "Nintendo Switch OLED",
+                precio: 349.99,
+                imagen: "img/ps5.png",
+                categoria: "consolas",
+                descripcion: "La versátil consola híbrida de Nintendo con pantalla OLED de 7 pulgadas. Juega en casa con la base o llévala contigo para gaming portátil de alta calidad.",
+                especificaciones: [
+                    "Pantalla: OLED de 7 pulgadas (1280x720)",
+                    "CPU/GPU: NVIDIA Custom Tegra",
+                    "Memoria: 4GB LPDDR4",
+                    "Almacenamiento: 64GB",
+                    "Batería: Hasta 9 horas"
+                ]
+            },
+            {
+                id: 10,
+                nombre: "PlayStation 4",
+                precio: 299.99,
+                imagen: "img/ps5 vertical.png",
+                categoria: "consolas",
+                descripcion: "La consola que revolucionó el gaming. Con miles de juegos disponibles, PlayStation 4 ofrece entretenimiento de alta calidad para toda la familia.",
+                especificaciones: [
+                    "CPU: AMD Jaguar de 8 núcleos",
+                    "GPU: 1.84 TFLOPs",
+                    "Memoria: 8GB GDDR5",
+                    "Almacenamiento: 500GB HDD",
+                    "Resolución: Hasta 4K"
+                ]
+            },
+            {
+                id: 11,
+                nombre: "Headset Gaming RGB",
+                precio: 89.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Audífonos gaming con iluminación RGB, micrófono desmontable y sonido envolvente 7.1. Perfectos para gaming competitivo y streaming.",
+                especificaciones: [
+                    "Tipo: Over-ear",
+                    "Conectividad: USB 3.5mm",
+                    "Iluminación: RGB personalizable",
+                    "Micrófono: Desmontable con cancelación de ruido",
+                    "Frecuencia: 20Hz - 20kHz"
+                ]
+            },
+            {
+                id: 12,
+                nombre: "Teclado Mecánico Gaming",
+                precio: 129.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Teclado mecánico con switches Cherry MX Red, iluminación RGB por tecla y construcción de aluminio. Ideal para gaming y escritura prolongada.",
+                especificaciones: [
+                    "Tipo: Mecánico",
+                    "Switches: Cherry MX Red",
+                    "Iluminación: RGB por tecla",
+                    "Conectividad: USB",
+                    "Layout: QWERTY Español"
+                ]
+            },
+            {
+                id: 13,
+                nombre: "Mouse Gaming RGB",
+                precio: 79.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Mouse gaming ergonómico con sensor óptico de alta precisión, iluminación RGB y botones programables. DPI ajustable hasta 16000.",
+                especificaciones: [
+                    "Sensor: Óptico PixArt 3335",
+                    "DPI: 200-16000",
+                    "Botones: 6 programables",
+                    "Iluminación: RGB",
+                    "Peso: 85g"
+                ]
+            },
+            {
+                id: 14,
+                nombre: "Monitor Gaming 144Hz",
+                precio: 299.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Monitor gaming de 27 pulgadas con frecuencia de 144Hz, tiempo de respuesta de 1ms y tecnología G-Sync. Perfecto para gaming competitivo.",
+                especificaciones: [
+                    "Tamaño: 27 pulgadas",
+                    "Resolución: 2560x1440 (QHD)",
+                    "Frecuencia: 144Hz",
+                    "Tiempo de respuesta: 1ms",
+                    "Tecnología: G-Sync"
+                ]
+            },
+            {
+                id: 15,
+                nombre: "Silla Gaming Ergonómica",
+                precio: 249.99,
+                imagen: "img/headset.png",
+                categoria: "accesorios",
+                descripcion: "Silla gaming ergonómica con ajuste de altura, reposabrazos ajustables y soporte lumbar. Tapizada en PU con diseño moderno.",
+                especificaciones: [
+                    "Material: PU + Malla",
+                    "Ajustes: Altura, reposabrazos, lumbar",
+                    "Peso máximo: 150kg",
+                    "Inclinación: Hasta 180°",
+                    "Garantía: 2 años"
+                ]
+            }
+        ];
+
+        // Obtener ID del producto de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productoId = parseInt(urlParams.get('id'));
+
+        // Encontrar el producto
+        const producto = productos.find(p => p.id === productoId);
+
+        if (producto) {
+            // Cargar información del producto
+            document.getElementById('titulo-producto').textContent = producto.nombre;
+            document.getElementById('precio-producto').textContent = `$${producto.precio}`;
+            document.getElementById('imagen-producto').src = producto.imagen;
+            document.getElementById('imagen-producto').alt = producto.nombre;
+            document.getElementById('descripcion-producto').textContent = producto.descripcion;
+
+            // Cargar especificaciones
+            const listaEspecificaciones = document.getElementById('lista-especificaciones');
+            producto.especificaciones.forEach(espec => {
+                const li = document.createElement('li');
+                li.textContent = espec;
+                listaEspecificaciones.appendChild(li);
+            });
+
+            // Cargar productos relacionados (misma categoría, excluyendo el actual)
+            const productosRelacionados = productos.filter(p =>
+                p.categoria === producto.categoria && p.id !== producto.id
+            ).slice(0, 4);
+
+            const contenedorRelacionados = document.getElementById('productos-relacionados');
+            productosRelacionados.forEach(prod => {
+                const div = document.createElement('div');
+                div.className = 'tarjeta tarjeta-producto';
+                div.innerHTML = `
+                    <img src="${prod.imagen}" alt="${prod.nombre}">
+                    <h4>${prod.nombre}</h4>
+                    <p class="precio">$${prod.precio}</p>
+                    <a href="producto-detalle.html?id=${prod.id}" class="boton boton-gradiente-claro">Ver Detalles</a>
+                `;
+                contenedorRelacionados.appendChild(div);
+            });
+        } else {
+            // Producto no encontrado
+            document.querySelector('.contenedor-detalle').innerHTML = '<h1>Producto no encontrado</h1>';
+        }
+
+        // Funcionalidad de cantidad
+        const btnDisminuir = document.getElementById('disminuir');
+        const btnAumentar = document.getElementById('aumentar');
+        const inputCantidad = document.getElementById('cantidad');
+
+        btnDisminuir.addEventListener('click', () => {
+            const valor = parseInt(inputCantidad.value);
+            if (valor > 1) {
+                inputCantidad.value = valor - 1;
+            }
+        });
+
+        btnAumentar.addEventListener('click', () => {
+            const valor = parseInt(inputCantidad.value);
+            if (valor < 10) {
+                inputCantidad.value = valor + 1;
+            }
+        });
+
+        // Funcionalidad del carrito
+        document.getElementById('agregar-carrito').addEventListener('click', () => {
+            const cantidad = parseInt(inputCantidad.value);
+            if (window.carrito) {
+                window.carrito.agregarProducto(producto.id, cantidad);
+            }
+        });
+
+        document.getElementById('comprar-ahora').addEventListener('click', () => {
+            const cantidad = parseInt(inputCantidad.value);
+            if (window.carrito) {
+                window.carrito.agregarProducto(producto.id, cantidad);
+                // Después de agregar, mostrar el carrito
+                setTimeout(() => {
+                    window.carrito.mostrarModal();
+                }, 1000);
+            }
+        });
+        }
+    </script>
+
+</body>
+</html>
