@@ -500,14 +500,34 @@ function verificarCompatibilidadNavegador() {
 // ===== CLASE API =====
 const API_BASE = 'http://localhost:3000/api';
 
+const LOCAL_PRODUCTS = [
+    { id: 1, name: "Apex Legends: Deluxe Edition", price: 59.99, image: "img/apex.jpg", category: "juegos", description: "Battle royale gratuito con contenido deluxe.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Shooter", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 2, name: "Death Stranding: Deluxe Edition", price: 49.99, image: "img/death stranding.png", category: "juegos", description: "Aventura de exploración con historia inmersiva.", specifications: ["Plataforma: PS4/PS5/PC", "Género: Acción/Aventura", "Duración: 40+ horas", "Idioma: Español/Inglés"] },
+    { id: 3, name: "Cyberpunk 2077", price: 39.99, image: "img/cyberpunk.jpg", category: "juegos", description: "RPG futurista en Night City.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: RPG", "Modo: Un jugador", "Idioma: Español/Inglés"] },
+    { id: 4, name: "FIFA 24", price: 69.99, image: "img/fifa.jpg", category: "juegos", description: "Simulador de fútbol con modos de carrera y Ultimate Team.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Deportes", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 5, name: "Grand Theft Auto V", price: 29.99, image: "img/gta.jpg", category: "juegos", description: "Mundo abierto con campaña y GTA Online.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Acción/Aventura", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 6, name: "The Last of Us Part II", price: 49.99, image: "img/the-last-of-us.jpg", category: "juegos", description: "Aventura post-apocalíptica con narrativa emocional.", specifications: ["Plataforma: PS4", "Género: Acción/Aventura", "Duración: 20+ horas", "Idioma: Español/Inglés"] },
+    { id: 7, name: "PlayStation 5", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Sony.", specifications: ["CPU: AMD Zen 2", "GPU: 10.28 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 825GB SSD"] },
+    { id: 8, name: "Xbox Series X", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Microsoft.", specifications: ["CPU: AMD Zen 2", "GPU: 12 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 1TB SSD"] },
+    { id: 9, name: "Nintendo Switch OLED", price: 349.99, image: "img/ps5.png", category: "consolas", description: "Consola híbrida con pantalla OLED.", specifications: ["Pantalla: 7' OLED", "CPU: NVIDIA Tegra", "RAM: 4GB", "Almacenamiento: 64GB"] },
+    { id: 10, name: "PlayStation 4", price: 299.99, image: "img/ps5 vertical.png", category: "consolas", description: "Consola de anterior generación con amplio catálogo.", specifications: ["CPU: AMD Jaguar", "GPU: 1.84 TFLOPs", "RAM: 8GB GDDR5", "Almacenamiento: 500GB"] },
+    { id: 11, name: "Headset Gaming RGB", price: 89.99, image: "img/headset.png", category: "accesorios", description: "Audífonos gaming con RGB y micrófono desmontable.", specifications: ["Tipo: Over-ear", "Conectividad: USB/3.5mm", "Iluminación: RGB", "Micrófono: Cancelación de ruido"] },
+    { id: 12, name: "Teclado Mecánico Gaming", price: 129.99, image: "img/headset.png", category: "accesorios", description: "Teclado con switches mecánicos y RGB.", specifications: ["Switches: Cherry MX", "Conectividad: USB", "Layout: QWERTY", "Iluminación: RGB"] },
+    { id: 13, name: "Mouse Gaming RGB", price: 79.99, image: "img/headset.png", category: "accesorios", description: "Mouse ergonómico con DPI ajustable.", specifications: ["Sensor: Óptico", "DPI: 200-16000", "Botones: 6", "Iluminación: RGB"] },
+    { id: 14, name: "Monitor Gaming 144Hz", price: 299.99, image: "img/headset.png", category: "accesorios", description: "Monitor de 144Hz con tiempo de respuesta 1ms.", specifications: ["Tamaño: 27'", "Resolución: 2560x1440", "Frecuencia: 144Hz", "Tecnología: G-Sync"] },
+    { id: 15, name: "Silla Gaming Ergonómica", price: 249.99, image: "img/headset.png", category: "accesorios", description: "Silla gaming ajustable con soporte lumbar.", specifications: ["Material: PU", "Peso max: 150kg", "Inclinación: 180°", "Garantía: 2 años"] }
+];
+
 async function fetchProductos() {
     try {
         const response = await fetch(`${API_BASE}/products`);
         if (!response.ok) throw new Error('No se pudo obtener productos');
-        return await response.json();
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) return data;
+        return LOCAL_PRODUCTS;
     } catch (err) {
         console.warn('Error API productos, fallback local', err);
-        return [];
+        return LOCAL_PRODUCTS;
     }
 }
 
@@ -515,10 +535,12 @@ async function fetchProductoById(id) {
     try {
         const response = await fetch(`${API_BASE}/products/${id}`);
         if (!response.ok) throw new Error('Producto no encontrado');
-        return await response.json();
+        const data = await response.json();
+        if (data) return data;
+        throw new Error('Producto no encontrado en API');
     } catch (err) {
-        console.warn('Error API producto por id', err);
-        return null;
+        console.warn('Error API producto por id, fallback local', err);
+        return LOCAL_PRODUCTS.find(p => p.id === Number(id)) || null;
     }
 }
 
@@ -630,7 +652,11 @@ async function cargarDetalleProducto() {
     const productoId = Number(params.get('id'));
     if (!productoId) return;
 
-    const producto = await fetchProductoById(productoId);
+    let producto = await fetchProductoById(productoId);
+    if (!producto) {
+        producto = LOCAL_PRODUCTS.find(p => p.id === productoId);
+    }
+
     if (!producto) {
         container.innerHTML = '<h1>Producto no encontrado</h1>';
         return;
