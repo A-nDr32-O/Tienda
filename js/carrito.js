@@ -75,21 +75,18 @@ class Carrito {
 
     obtenerProductoLocalPorId(id) {
         const productos = [
-            { id: 1, nombre: "Apex Legends: Deluxe Edition", precio: 59.99, imagen: "img/apex.jpg" },
-            { id: 2, nombre: "Death Stranding: Deluxe Edition", precio: 49.99, imagen: "img/death stranding.png" },
-            { id: 3, nombre: "Cyberpunk 2077", precio: 39.99, imagen: "img/apex.jpg" },
-            { id: 4, nombre: "FIFA 24", precio: 69.99, imagen: "img/apex.jpg" },
-            { id: 5, nombre: "Grand Theft Auto V", precio: 29.99, imagen: "img/apex.jpg" },
-            { id: 6, nombre: "The Last of Us Part II", precio: 49.99, imagen: "img/death stranding.png" },
+            { id: 1, nombre: "Apex Legends: Deluxe Edition", precio: 59.99, imagen: "img/Apex_legends.jpg" },
+            { id: 2, nombre: "Death Stranding: Deluxe Edition", precio: 49.99, imagen: "img/Death_Stranding.webp" },
+            { id: 3, nombre: "Cyberpunk 2077", precio: 39.99, imagen: "img/Cyberpunk_2077.jpg" },
             { id: 7, nombre: "PlayStation 5", precio: 499.99, imagen: "img/ps5 vertical.png" },
-            { id: 8, nombre: "Xbox Series X", precio: 499.99, imagen: "img/ps5.png" },
-            { id: 9, nombre: "Nintendo Switch OLED", precio: 349.99, imagen: "img/ps5.png" },
-            { id: 10, nombre: "PlayStation 4", precio: 299.99, imagen: "img/ps5 vertical.png" },
+            { id: 8, nombre: "Xbox Series X", precio: 499.99, imagen: "img/xbox-series-x.png" },
+            { id: 9, nombre: "Nintendo Switch OLED", precio: 349.99, imagen: "img/nintendo-switch-oled.png" },
+            { id: 10, nombre: "PlayStation 4", precio: 299.99, imagen: "img/Ps4_vertical.png" },
             { id: 11, nombre: "Headset Gaming RGB", precio: 89.99, imagen: "img/headset.png" },
-            { id: 12, nombre: "Teclado Mecánico Gaming", precio: 129.99, imagen: "img/headset.png" },
-            { id: 13, nombre: "Mouse Gaming RGB", precio: 79.99, imagen: "img/headset.png" },
-            { id: 14, nombre: "Monitor Gaming 144Hz", precio: 299.99, imagen: "img/headset.png" },
-            { id: 15, nombre: "Silla Gaming Ergonómica", precio: 249.99, imagen: "img/headset.png" }
+            { id: 12, nombre: "Teclado Mecánico Gaming", precio: 129.99, imagen: "img/teclado-mecanico-gaming.jpg" },
+            { id: 13, nombre: "Mouse Gaming RGB", precio: 79.99, imagen: "img/mouse-gaming-rgb.jpg" },
+            { id: 14, nombre: "Monitor Gaming 144Hz", precio: 299.99, imagen: "img/monitor-gamingASUS-TUF-Gaming.png" },
+            { id: 15, nombre: "Silla Gaming Ergonómica", precio: 249.99, imagen: "img/silla-gaming-ergonomica.jpg" }
         ];
 
         return productos.find(p => p.id === id);
