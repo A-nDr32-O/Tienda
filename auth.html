@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación - El Enemigos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-box h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .auth-box label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .auth-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .auth-box input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .auth-box button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .auth-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-form {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 20px;
+        }
+
+        .toggle-form a {
+            color: #ffd700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: none;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            display: block;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            display: block;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .volver:hover {
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <!-- Formulario de Login -->
+            <form id="loginForm" class="auth-form active">
+                <h2>Iniciar Sesión</h2>
+                <div id="loginMessage" class="message"></div>
+                
+                <label for="loginEmail">Correo Electrónico:</label>
+                <input type="email" id="loginEmail" required placeholder="tu@correo.com">
+                
+                <label for="loginPassword">Contraseña:</label>
+                <input type="password" id="loginPassword" required placeholder="Tu contraseña">
+                
+                <button type="submit">Ingresar</button>
+                
+                <div class="toggle-form">
+                    ¿No tienes cuenta? <a onclick="toggleForms()">Regístrate aquí</a>
+                </div>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="registerForm" class="auth-form">
+                <h2>Crear Cuenta</h2>
+                <div id="registerMessage" class="message"></div>
+                
+                <label for="registerName">Nombre:</label>
+                <input type="text" id="registerName" required placeholder="Tu nombre">
+                
+                <label for="registerEmail">Correo Electrónico:</label>
+                <input type="email" id="registerEmail" required placeholder="tu@correo.com">
+                
+                <label for="registerPassword">Contraseña:</label>
+                <input type="password" id="registerPassword" required placeholder="Crea una contraseña">
+                
+                <label for="registerPasswordConfirm">Confirmar Contraseña:</label>
+                <input type="password" id="registerPasswordConfirm" required placeholder="Confirma tu contraseña">
+                
+                <button type="submit">Crear Cuenta</button>
+                
+                <div class="toggle-form">
+                    ¿Ya tienes cuenta? <a onclick="toggleForms()">Inicia sesión aquí</a>
+                </div>
+            </form>
+
+            <a href="index.html" class="volver">← Volver a la tienda</a>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -3,6 +3,9 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,6 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'enemies_secret_2026';
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('../'));
 
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) console.error('Error opening DB', err);
@@ -49,6 +53,30 @@ CREATE TABLE IF NOT EXISTS orders (
 db.exec(initDbSql, (err) => {
   if (err) console.error('Error inicializar tablas', err);
   else console.log('Tablas inicializadas.');
+});
+
+const uploadsDir = path.join(__dirname, '../img/uploads');
+fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: uploadsDir,
+  filename: (req, file, cb) => {
+    const safeName = `${Date.now()}-${file.originalname.replace(/[^a-z0-9._-]/gi, '_')}`;
+    cb(null, safeName);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.png', '.jpg', '.jpeg'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (!allowed.includes(ext)) {
+      return cb(new Error('Solo se permiten archivos PNG, JPG o JPEG'));
+    }
+    cb(null, true);
+  }
 });
 
 const authMiddleware = (req, res, next) => {
@@ -111,6 +139,22 @@ app.delete('/api/products/:id', authMiddleware, (req, res) => {
     if (err) return res.status(500).json({ error: 'Error eliminando producto' });
     if (this.changes === 0) return res.status(404).json({ error: 'Producto no encontrado' });
     res.json({ success: true });
+  });
+});
+
+app.post('/api/upload', authMiddleware, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Permiso denegado' });
+
+  upload.single('image')(req, res, function(err) {
+    if (err) {
+      return res.status(400).json({ error: err.message || 'Error subiendo la imagen' });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'No se envió ninguna imagen' });
+    }
+
+    const imagePath = `/img/uploads/${req.file.filename}`;
+    res.json({ image: imagePath });
   });
 });
 

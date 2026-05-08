@@ -59,16 +59,14 @@ class Carrito {
         this.mostrarNotificacion('Producto agregado al carrito');
     }
 
-    // Obtener producto por ID (llamada a API o fallback)
+    // Obtener producto por ID
     async obtenerProductoPorId(id) {
         try {
             const response = await fetch('http://localhost:3000/api/products/' + id);
-            if (!response.ok) {
-                // fallback local
-                return this.obtenerProductoLocalPorId(id);
-            }
+            if (!response.ok) throw new Error('No encontrado');
             return await response.json();
         } catch (error) {
+            console.warn('API no disponible, fallback local', error);
             return this.obtenerProductoLocalPorId(id);
         }
     }
