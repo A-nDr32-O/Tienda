@@ -497,9 +497,10 @@ function verificarCompatibilidadNavegador() {
     return incompatibilidades.length === 0;
 }
 
-// ===== CLASE API =====
+// ===== CONFIGURACIÓN API =====
 const API_BASE = 'http://localhost:3000/api';
 
+// Datos locales como fallback
 const LOCAL_PRODUCTS = [
     { id: 1, name: "Apex Legends: Deluxe Edition", price: 59.99, image: "img/apex.jpg", category: "juegos", description: "Battle royale gratuito con contenido deluxe.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Shooter", "Multijugador: Sí", "Idioma: Español/Inglés"] },
     { id: 2, name: "Death Stranding: Deluxe Edition", price: 49.99, image: "img/death stranding.png", category: "juegos", description: "Aventura de exploración con historia inmersiva.", specifications: ["Plataforma: PS4/PS5/PC", "Género: Acción/Aventura", "Duración: 40+ horas", "Idioma: Español/Inglés"] },
@@ -526,7 +527,7 @@ async function fetchProductos() {
         if (Array.isArray(data) && data.length > 0) return data;
         return LOCAL_PRODUCTS;
     } catch (err) {
-        console.warn('Error API productos, fallback local', err);
+        console.warn('API no disponible, usando datos locales', err);
         return LOCAL_PRODUCTS;
     }
 }
@@ -539,7 +540,7 @@ async function fetchProductoById(id) {
         if (data) return data;
         throw new Error('Producto no encontrado en API');
     } catch (err) {
-        console.warn('Error API producto por id, fallback local', err);
+        console.warn('Error API, usando datos locales', err);
         return LOCAL_PRODUCTS.find(p => p.id === Number(id)) || null;
     }
 }
