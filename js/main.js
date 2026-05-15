@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar menú móvil
     inicializarMenuMovil();
 
+    // Inicializar menú de usuario
+    inicializarUserMenu();
+
     // Inicializar animaciones de entrada
     inicializarAnimaciones();
 
@@ -166,6 +169,7 @@ function inicializarCarrusel() {
         originalActualizarCarrusel();
         actualizarLiveRegion();
     };
+}
 
 // Función para inicializar validación de formularios
 function inicializarValidacionFormularios() {
@@ -230,27 +234,6 @@ function inicializarValidacionFormularios() {
             }
         });
     }
-}
-
-// Funciones auxiliares para validación
-function mostrarMensajeError(campo, mensaje) {
-    ocultarMensajeError(campo);
-
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'mensaje-error';
-    errorDiv.textContent = mensaje;
-
-    campo.parentNode.appendChild(errorDiv);
-    campo.classList.add('campo-error');
-
-    // Animación de entrada
-    errorDiv.style.opacity = '0';
-    errorDiv.style.transform = 'translateY(-10px)';
-    setTimeout(() => {
-        errorDiv.style.transition = 'all 0.3s ease';
-        errorDiv.style.opacity = '1';
-        errorDiv.style.transform = 'translateY(0)';
-    }, 10);
 }
 
 function ocultarMensajeError(campo) {
@@ -419,6 +402,187 @@ function inicializarMenuMovil() {
     menuToggle.setAttribute('aria-controls', 'menu-navegacion');
     nav.setAttribute('id', 'menu-navegacion');
 }
+
+function getToken() {
+    return localStorage.getItem('token');
+}
+
+function getUser() {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+}
+
+function logoutAndRedirect() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'auth.html';
+}
+
+function inicializarUserMenu() {
+    const userActions = document.querySelector('.acciones-usuario');
+    if (!userActions) return;
+
+    const popup = document.createElement('div');
+    popup.className = 'user-popup hidden';
+    popup.innerHTML = `
+        <div class="user-popup-card" role="dialog" aria-modal="true" aria-label="Menú de usuario">
+            <div class="user-popup-header">
+                <span id="userPopupGreeting">Hola</span>
+                <button type="button" class="user-popup-close" aria-label="Cerrar menú">×</button>
+            </div>
+            <div class="user-popup-body">
+                <div class="user-popup-actions">
+                    <button type="button" id="userPopupEdit" class="user-popup-button">Editar perfil</button>
+                    <button type="button" id="userPopupLogout" class="user-popup-button secondary">Cerrar sesión</button>
+                </div>
+                <div class="user-popup-form hidden" id="userPopupForm">
+                    <label for="userNewName">Nombre</label>
+                    <input id="userNewName" type="text" placeholder="Nuevo nombre">
+                    <label for="userNewPassword">Nueva contraseña</label>
+                    <input id="userNewPassword" type="password" placeholder="Nueva contraseña">
+                    <label for="userNewPasswordConfirm">Confirmar contraseña</label>
+                    <input id="userNewPasswordConfirm" type="password" placeholder="Confirmar contraseña">
+                    <div class="user-popup-form-actions">
+                        <button type="button" id="userPopupSave" class="user-popup-button">Guardar cambios</button>
+                        <button type="button" id="userPopupCancel" class="user-popup-button secondary">Cancelar</button>
+                    </div>
+                    <div id="userPopupMessage" class="user-popup-message"></div>
+                </div>
+            </div>
+        </div>`;
+    document.body.appendChild(popup);
+
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link) return;
+        if (!link.querySelector('i.fa-user')) return;
+
+        const user = getUser();
+        if (!user) {
+            if (link.getAttribute('href') === 'auth.html') return;
+            e.preventDefault();
+            window.location.href = 'auth.html';
+            return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+        updateUserPopup();
+        popup.classList.toggle('hidden');
+    });
+
+    popup.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.acciones-usuario')) {
+            return;
+        }
+        if (!popup.contains(e.target)) {
+            popup.classList.add('hidden');
+        }
+    });
+
+    const closeButton = popup.querySelector('.user-popup-close');
+    const editButton = popup.querySelector('#userPopupEdit');
+    const logoutButton = popup.querySelector('#userPopupLogout');
+    const saveButton = popup.querySelector('#userPopupSave');
+    const cancelButton = popup.querySelector('#userPopupCancel');
+    const formContainer = popup.querySelector('#userPopupForm');
+
+    closeButton.addEventListener('click', () => popup.classList.add('hidden'));
+    logoutButton.addEventListener('click', logoutAndRedirect);
+    editButton.addEventListener('click', () => {
+        formContainer.classList.remove('hidden');
+        popup.querySelector('#userPopupMessage').textContent = '';
+    });
+    cancelButton.addEventListener('click', () => {
+        formContainer.classList.add('hidden');
+        popup.querySelector('#userPopupMessage').textContent = '';
+    });
+    saveButton.addEventListener('click', async () => {
+        await handleUserProfileUpdate(popup);
+    });
+}
+
+function updateUserPopup() {
+    const user = getUser();
+    const greeting = document.getElementById('userPopupGreeting');
+    const nameInput = document.getElementById('userNewName');
+    const passwordInput = document.getElementById('userNewPassword');
+    const passwordConfirmInput = document.getElementById('userNewPasswordConfirm');
+    const formContainer = document.getElementById('userPopupForm');
+    const messageDiv = document.getElementById('userPopupMessage');
+
+    if (!user || !greeting) return;
+
+    greeting.textContent = `Hola, ${user.name}`;
+    if (nameInput) nameInput.value = user.name || '';
+    if (passwordInput) passwordInput.value = '';
+    if (passwordConfirmInput) passwordConfirmInput.value = '';
+    if (messageDiv) {
+        messageDiv.textContent = '';
+        messageDiv.className = 'user-popup-message';
+    }
+    if (formContainer) formContainer.classList.add('hidden');
+}
+
+async function handleUserProfileUpdate(popup) {
+    const name = document.getElementById('userNewName').value.trim();
+    const password = document.getElementById('userNewPassword').value;
+    const passwordConfirm = document.getElementById('userNewPasswordConfirm').value;
+    const messageDiv = document.getElementById('userPopupMessage');
+
+    messageDiv.className = 'user-popup-message';
+    messageDiv.textContent = '';
+
+    if (!name && !password) {
+        messageDiv.classList.add('error');
+        messageDiv.textContent = 'Ingresa un nombre o contraseña nueva para actualizar.';
+        return;
+    }
+
+    if (password && password !== passwordConfirm) {
+        messageDiv.classList.add('error');
+        messageDiv.textContent = 'Las contraseñas no coinciden.';
+        return;
+    }
+
+    const token = getToken();
+    if (!token) {
+        logoutAndRedirect();
+        return;
+    }
+
+    const payload = {};
+    if (name) payload.name = name;
+    if (password) payload.password = password;
+
+    try {
+        const response = await fetch(`${API_BASE}/users/me`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'No se pudo actualizar el perfil');
+
+        localStorage.setItem('user', JSON.stringify(data));
+        messageDiv.classList.add('success');
+        messageDiv.textContent = 'Perfil actualizado correctamente.';
+        updateUserPopup();
+    } catch (error) {
+        messageDiv.classList.add('error');
+        messageDiv.textContent = error.message;
+    }
+}
+
+function inicializarAnimaciones() {
     // Animación de entrada para tarjetas
     const tarjetas = document.querySelectorAll('.tarjeta');
     tarjetas.forEach((tarjeta, index) => {
@@ -502,12 +666,12 @@ const API_BASE = 'http://localhost:3000/api';
 
 // Datos locales como fallback
 const LOCAL_PRODUCTS = [
-    { id: 1, name: "Apex Legends: Deluxe Edition", price: 59.99, image: "img/apex.jpg", category: "juegos", description: "Battle royale gratuito con contenido deluxe.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Shooter", "Multijugador: Sí", "Idioma: Español/Inglés"] },
-    { id: 2, name: "Death Stranding: Deluxe Edition", price: 49.99, image: "img/death stranding.png", category: "juegos", description: "Aventura de exploración con historia inmersiva.", specifications: ["Plataforma: PS4/PS5/PC", "Género: Acción/Aventura", "Duración: 40+ horas", "Idioma: Español/Inglés"] },
-    { id: 3, name: "Cyberpunk 2077", price: 39.99, image: "img/cyberpunk.jpg", category: "juegos", description: "RPG futurista en Night City.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: RPG", "Modo: Un jugador", "Idioma: Español/Inglés"] },
-    { id: 4, name: "FIFA 24", price: 69.99, image: "img/fifa.jpg", category: "juegos", description: "Simulador de fútbol con modos de carrera y Ultimate Team.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Deportes", "Multijugador: Sí", "Idioma: Español/Inglés"] },
-    { id: 5, name: "Grand Theft Auto V", price: 29.99, image: "img/gta.jpg", category: "juegos", description: "Mundo abierto con campaña y GTA Online.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Acción/Aventura", "Multijugador: Sí", "Idioma: Español/Inglés"] },
-    { id: 6, name: "The Last of Us Part II", price: 49.99, image: "img/the-last-of-us.jpg", category: "juegos", description: "Aventura post-apocalíptica con narrativa emocional.", specifications: ["Plataforma: PS4", "Género: Acción/Aventura", "Duración: 20+ horas", "Idioma: Español/Inglés"] },
+    { id: 1, name: "Apex Legends: Deluxe Edition", price: 59.99, image: "img/Apex_legends.jpg", category: "juegos", description: "Battle royale gratuito con contenido deluxe.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Shooter", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 2, name: "Death Stranding: Deluxe Edition", price: 49.99, image: "img/Death_Stranding.webp", category: "juegos", description: "Aventura de exploración con historia inmersiva.", specifications: ["Plataforma: PS4/PS5/PC", "Género: Acción/Aventura", "Duración: 40+ horas", "Idioma: Español/Inglés"] },
+    { id: 3, name: "Cyberpunk 2077", price: 39.99, image: "img/Cyberpunk_2077.jpg", category: "juegos", description: "RPG futurista en Night City.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: RPG", "Modo: Un jugador", "Idioma: Español/Inglés"] },
+    { id: 4, name: "FIFA 24", price: 69.99, image: "img/placeholder.svg", category: "juegos", description: "Simulador de fútbol con modos de carrera y Ultimate Team.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Deportes", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 5, name: "Grand Theft Auto V", price: 29.99, image: "img/placeholder.svg", category: "juegos", description: "Mundo abierto con campaña y GTA Online.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Acción/Aventura", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 6, name: "The Last of Us Part II", price: 49.99, image: "img/placeholder.svg", category: "juegos", description: "Aventura post-apocalíptica con narrativa emocional.", specifications: ["Plataforma: PS4", "Género: Acción/Aventura", "Duración: 20+ horas", "Idioma: Español/Inglés"] },
     { id: 7, name: "PlayStation 5", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Sony.", specifications: ["CPU: AMD Zen 2", "GPU: 10.28 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 825GB SSD"] },
     { id: 8, name: "Xbox Series X", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Microsoft.", specifications: ["CPU: AMD Zen 2", "GPU: 12 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 1TB SSD"] },
     { id: 9, name: "Nintendo Switch OLED", price: 349.99, image: "img/ps5.png", category: "consolas", description: "Consola híbrida con pantalla OLED.", specifications: ["Pantalla: 7' OLED", "CPU: NVIDIA Tegra", "RAM: 4GB", "Almacenamiento: 64GB"] },
@@ -595,7 +759,7 @@ async function cargarProductosCatalogo() {
             return `
                 <div class="tarjeta tarjeta-producto" data-categoria="${category}" data-id="${id}">
                     <button class="btn-wishlist" onclick="toggleWishlist(${id})"><i class="${estaEnWishlist(id) ? 'fas' : 'far'} fa-heart"></i></button>
-                    <img src="${image}" alt="${name}" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=${encodeURIComponent(name)}'">
+                    <img src="${image}" alt="${name}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
                     <h4>${name}</h4>
                     <p class="precio">$${price.toFixed(2)}</p>
                     <div class="botones-producto">
@@ -635,79 +799,63 @@ async function cargarProductosCatalogo() {
             renderizarProductos();
         });
     });
-
-    busqueda?.addEventListener('input', function() {
-        terminoBusqueda = this.value;
-        paginaActual = 1;
-        renderizarProductos();
-    });
-
-    renderizarProductos();
-}
-
-async function cargarDetalleProducto() {
-    const container = document.querySelector('.detalle-producto');
-    if (!container) return;
-
-    const params = new URLSearchParams(window.location.search);
-    const productoId = Number(params.get('id'));
-    if (!productoId) return;
-
-    let producto = await fetchProductoById(productoId);
-    if (!producto) {
-        producto = LOCAL_PRODUCTS.find(p => p.id === productoId);
     }
 
-    if (!producto) {
-        container.innerHTML = '<h1>Producto no encontrado</h1>';
+async function cargarDetalleProducto() {
+    const agregarBtn = document.getElementById('agregar-carrito');
+    const comprarBtn = document.getElementById('comprar-ahora');
+    const containerRelated = document.getElementById('productos-relacionados');
+
+    if (!agregarBtn && !comprarBtn && !containerRelated) {
         return;
     }
 
-    document.getElementById('titulo-producto').textContent = producto.name || producto.nombre;
-    document.getElementById('precio-producto').textContent = `$${(producto.price || producto.precio).toFixed(2)}`;
-    document.getElementById('imagen-producto').src = producto.image || producto.imagen;
-    document.getElementById('imagen-producto').alt = producto.name || producto.nombre;
-    document.getElementById('descripcion-producto').textContent = producto.description || producto.descripcion;
+    const params = new URLSearchParams(window.location.search);
+    const productoId = Number(params.get('id'));
+    if (!productoId) {
+        return;
+    }
 
-    const ul = document.getElementById('lista-especificaciones');
-    ul.innerHTML = '';
-    if (producto.specifications || producto.especificaciones) {
-        const esp = producto.specifications || producto.especificaciones;
-        esp.forEach(text => {
-            const li = document.createElement('li');
-            li.textContent = text;
-            ul.appendChild(li);
+    const producto = await fetchProductoById(productoId);
+    if (!producto) {
+        return;
+    }
+
+    if (agregarBtn) {
+        agregarBtn.addEventListener('click', async () => {
+            const cantidad = Number(document.getElementById('cantidad')?.value || 1);
+            await window.carrito?.agregarProducto(producto, cantidad);
         });
     }
 
-    document.getElementById('agregar-carrito').addEventListener('click', async () => {
-        const cantidad = Number(document.getElementById('cantidad').value);
-        await window.carrito?.agregarProducto(producto, cantidad);
-    });
+    if (comprarBtn) {
+        comprarBtn.addEventListener('click', async () => {
+            const cantidad = Number(document.getElementById('cantidad')?.value || 1);
+            await window.carrito?.agregarProducto(producto, cantidad);
+            setTimeout(() => window.carrito?.mostrarModal(), 250);
+        });
+    }
 
-    document.getElementById('comprar-ahora').addEventListener('click', async () => {
-        const cantidad = Number(document.getElementById('cantidad').value);
-        await window.carrito?.agregarProducto(producto, cantidad);
-        setTimeout(() => window.carrito?.mostrarModal(), 250);
-    });
+    if (containerRelated) {
+        const allProducts = await fetchProductos();
+        const relatedItems = allProducts
+            .filter(p => (p.category === producto.category || p.categoria === producto.categoria) && p.id !== productoId)
+            .slice(0, 4);
 
-    // Cargar relacionados
-    const allProducts = await fetchProductos();
-    const relatedItems = allProducts.filter(p => (p.category === producto.category || p.categoria === producto.categoria) && p.id !== productoId).slice(0, 4);
-    const containerRelated = document.getElementById('productos-relacionados');
-    containerRelated.innerHTML = relatedItems.map(p => {
-        const name = p.name || p.nombre;
-        const price = p.price || p.precio;
-        const image = p.image || p.imagen;
-        return `
-            <div class="tarjeta tarjeta-producto">
-                <img src="${image}" alt="${name}" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=${encodeURIComponent(name)}'">
-                <h4>${name}</h4>
-                <p class="precio">$${price.toFixed(2)}</p>
-                <a href="producto-detalle.html?id=${p.id}" class="boton boton-gradiente-claro">Ver Detalles</a>
-            </div>
-        `;
-    }).join('');
+        containerRelated.innerHTML = relatedItems.map(p => {
+            const name = p.name || p.nombre;
+            const price = p.price || p.precio;
+            const image = p.image || p.imagen;
+            return `
+                <div class="tarjeta tarjeta-producto">
+                    <img src="${image}" alt="${name}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
+                    <h4>${name}</h4>
+                    <p class="precio">$${price.toFixed(2)}</p>
+                    <a href="producto-detalle.html?id=${p.id}" class="boton boton-gradiente-claro">Ver Detalles</a>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 async function agregarAlCarrito(productId) {
@@ -721,5 +869,7 @@ window.agregarAlCarrito = agregarAlCarrito;
 async function inicializarPaginaApi() {
     await cargarProductosCatalogo();
     await cargarDetalleProducto();
-    actualizarContadorWishlist();
+    if (typeof actualizarContadorWishlist === 'function') {
+        actualizarContadorWishlist();
+    }
 }
