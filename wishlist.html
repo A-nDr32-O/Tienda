@@ -30,7 +30,7 @@
                 <i class="fa-solid fa-heart"></i>
                 <span class="contador-wishlist" style="display: none;">0</span>
             </a>
-            <a href="#"><i class="fa-solid fa-user"></i></a>
+            <a href="auth.html"><i class="fa-solid fa-user"></i></a>
             <a href="#" class="boton-carrito"><i class="fa-solid fa-cart-shopping"></i> 0 Items</a>
         </div>
         <button class="menu-toggle" aria-label="Menú de navegación">
@@ -125,7 +125,7 @@
                 id: 1,
                 nombre: "Apex Legends: Deluxe Edition",
                 precio: 59.99,
-                imagen: "img/apex.jpg",
+                imagen: "img/Apex_legends.jpg",
                 categoria: "juegos",
                 descripcion: "Únete a la batalla real definitiva con Apex Legends. Forma equipo con leyendas icónicas, domina habilidades únicas y lucha por la victoria en un mundo de acción intensa.",
                 especificaciones: [
@@ -140,7 +140,7 @@
                 id: 2,
                 nombre: "Death Stranding: Deluxe Edition",
                 precio: 49.99,
-                imagen: "img/death stranding.png",
+                imagen: "img/Death_Stranding.webp",
                 categoria: "juegos",
                 descripcion: "En un mundo devastado por la Death Stranding, Sam Porter Bridges debe conectar los últimos reductos de humanidad. Una experiencia única que combina acción, exploración y conexión social.",
                 especificaciones: [
@@ -155,7 +155,7 @@
                 id: 3,
                 nombre: "Cyberpunk 2077",
                 precio: 39.99,
-                imagen: "img/cyberpunk.jpg",
+                imagen: "img/Cyberpunk_2077.jpg",
                 categoria: "juegos",
                 descripcion: "Sumérgete en Night City, una megalópolis obsesionada con el poder, el glamour y la modificación corporal. Crea tu personaje y escribe tu propia historia en este mundo abierto.",
                 especificaciones: [
@@ -170,7 +170,7 @@
                 id: 4,
                 nombre: "FIFA 24",
                 precio: 69.99,
-                imagen: "img/fifa.jpg",
+                imagen: "img/placeholder.svg",
                 categoria: "juegos",
                 descripcion: "La experiencia futbolística definitiva. Juega con tus equipos favoritos, crea tu club de ensueño y vive la emoción del fútbol con gráficos hiperrealistas y jugabilidad innovadora.",
                 especificaciones: [
@@ -185,7 +185,7 @@
                 id: 5,
                 nombre: "Grand Theft Auto V",
                 precio: 29.99,
-                imagen: "img/gta.jpg",
+                imagen: "img/placeholder.svg",
                 categoria: "juegos",
                 descripcion: "Los Santos: una extensa y soleada metrópolis llena de gurús de autoayuda, estrellas de cine y millonarios. Tres criminales muy diferentes planean sus próximos golpes.",
                 especificaciones: [
@@ -200,7 +200,7 @@
                 id: 6,
                 nombre: "The Last of Us Part II",
                 precio: 49.99,
-                imagen: "img/the-last-of-us.jpg",
+                imagen: "img/placeholder.svg",
                 categoria: "juegos",
                 descripcion: "Cinco años después de los eventos del primer juego, Ellie y Joel se establecen en Wyoming. La vida es dura pero predecible hasta que un encuentro violento cambia todo.",
                 especificaciones: [
@@ -230,7 +230,7 @@
                 id: 8,
                 nombre: "Xbox Series X",
                 precio: 499.99,
-                imagen: "img/xbox-series-x.jpg",
+                imagen: "img/xbox-series-x.png",
                 categoria: "consolas",
                 descripcion: "La consola más potente de Microsoft. Disfruta de juegos en 4K a 120 FPS, Quick Resume para cambiar entre juegos al instante y Smart Delivery para actualizaciones gratuitas.",
                 especificaciones: [
@@ -245,7 +245,7 @@
                 id: 9,
                 nombre: "Nintendo Switch OLED",
                 precio: 349.99,
-                imagen: "img/nintendo-switch-oled.jpg",
+                imagen: "img/nintendo-switch.png",
                 categoria: "consolas",
                 descripcion: "La versátil consola híbrida de Nintendo con pantalla OLED de 7 pulgadas. Juega en casa con la base o llévala contigo para gaming portátil de alta calidad.",
                 especificaciones: [
@@ -260,7 +260,7 @@
                 id: 10,
                 nombre: "PlayStation 4",
                 precio: 299.99,
-                imagen: "img/ps4.jpg",
+                imagen: "img/Ps4_vertical.png",
                 categoria: "consolas",
                 descripcion: "La consola que revolucionó el gaming. Con miles de juegos disponibles, PlayStation 4 ofrece entretenimiento de alta calidad para toda la familia.",
                 especificaciones: [
@@ -320,7 +320,7 @@
                 id: 14,
                 nombre: "Monitor Gaming 144Hz",
                 precio: 299.99,
-                imagen: "img/monitor-gaming.jpg",
+                imagen: "img/Monitor_Gaming_144Hz.png",
                 categoria: "accesorios",
                 descripcion: "Monitor gaming de 27 pulgadas con frecuencia de 144Hz, tiempo de respuesta de 1ms y tecnología G-Sync. Perfecto para gaming competitivo.",
                 especificaciones: [
@@ -335,7 +335,7 @@
                 id: 15,
                 nombre: "Silla Gaming Ergonómica",
                 precio: 249.99,
-                imagen: "img/silla-gaming.jpg",
+                imagen: "img/Silla_Gaming_Ergonómica.png",
                 categoria: "accesorios",
                 descripcion: "Silla gaming ergonómica con ajuste de altura, reposabrazos ajustables y soporte lumbar. Tapizada en PU con diseño moderno.",
                 especificaciones: [
@@ -378,7 +378,7 @@
                         <button class="btn-wishlist active" onclick="toggleWishlist(${producto.id})">
                             <i class="fas fa-heart"></i>
                         </button>
-                        <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='https://via.placeholder.com/250x250/9370DB/FFFFFF?text=${encodeURIComponent(producto.nombre)}'">
+                        <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
                         <h4>${producto.nombre}</h4>
                         <p class="precio">$${producto.precio}</p>
                         <div class="botones-producto">

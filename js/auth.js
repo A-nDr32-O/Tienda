@@ -82,14 +82,10 @@ async function handleLogin(e) {
         messageDiv.textContent = '✓ Login exitoso. Redirigiendo...';
 
         setTimeout(() => {
-            // Solo permitir acceso si es admin
             if (data.user.role === 'admin') {
                 window.location.href = 'admin-productos.html';
             } else {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                messageDiv.className = 'message error';
-                messageDiv.textContent = '✗ Solo administradores pueden acceder';
+                window.location.href = 'index.html';
             }
         }, 1500);
 

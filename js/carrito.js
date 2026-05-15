@@ -81,8 +81,8 @@ class Carrito {
             { id: 9, nombre: "Nintendo Switch OLED", precio: 349.99, imagen: "img/nintendo-switch-oled.png" },
             { id: 10, nombre: "PlayStation 4", precio: 299.99, imagen: "img/Ps4_vertical.png" },
             { id: 11, nombre: "Headset Gaming RGB", precio: 89.99, imagen: "img/headset.png" },
-            { id: 12, nombre: "Teclado Mecánico Gaming", precio: 129.99, imagen: "img/teclado-mecanico-gaming.jpg" },
-            { id: 13, nombre: "Mouse Gaming RGB", precio: 79.99, imagen: "img/mouse-gaming-rgb.jpg" },
+            { id: 12, nombre: "Teclado Mecánico Gaming", precio: 129.99, imagen: "img/Teclado_Mecánico_Gaming.png" },
+            { id: 13, nombre: "Mouse Gaming RGB", precio: 79.99, imagen: "img/Mouse_Gaming_RGB.png" },
             { id: 14, nombre: "Monitor Gaming 144Hz", precio: 299.99, imagen: "img/monitor-gamingASUS-TUF-Gaming.png" },
             { id: 15, nombre: "Silla Gaming Ergonómica", precio: 249.99, imagen: "img/silla-gaming-ergonomica.jpg" }
         ];

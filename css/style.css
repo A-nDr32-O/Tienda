@@ -124,6 +124,130 @@ a {
     color: var(--texto-suave);
 }
 
+.user-popup {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 9999;
+    width: 320px;
+    max-width: calc(100% - 30px);
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-popup.hidden {
+    display: none;
+}
+
+.user-popup-card {
+    background: #ffffff;
+    color: #111111;
+    border-radius: 16px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.user-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: #121212;
+    color: #ffffff;
+}
+
+.user-popup-header span {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.user-popup-close {
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.user-popup-body {
+    padding: 16px 18px 18px;
+}
+
+.user-popup-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.user-popup-button {
+    width: 100%;
+    border: none;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #1c1c1c;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.user-popup-button:hover {
+    transform: translateY(-1px);
+    background: #2f2f2f;
+}
+
+.user-popup-button.secondary {
+    background: #ededed;
+    color: #111111;
+}
+
+.user-popup-form {
+    display: grid;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.user-popup-form.hidden {
+    display: none;
+}
+
+.user-popup-form label {
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+.user-popup-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #f8f8f8;
+    color: #111111;
+}
+
+.user-popup-form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.user-popup-message {
+    min-height: 22px;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+.user-popup-message.success {
+    color: #2e7d32;
+}
+
+.user-popup-message.error {
+    color: #c62828;
+}
+
 
 .seccion-principal {
     background-image: url('../img/hero-bg.jpg'); 
