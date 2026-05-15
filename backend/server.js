@@ -200,6 +200,39 @@ app.get('/api/users/me', authMiddleware, (req, res) => {
   });
 });
 
+app.put('/api/users/me', authMiddleware, (req, res) => {
+  const { name, password } = req.body;
+  if (!name && !password) {
+    return res.status(400).json({ error: 'No hay datos para actualizar' });
+  }
+
+  const updates = [];
+  const params = [];
+
+  if (name) {
+    updates.push('name = ?');
+    params.push(name);
+  }
+
+  if (password) {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    updates.push('password = ?');
+    params.push(hashedPassword);
+  }
+
+  params.push(req.user.id);
+  const sql = `UPDATE users SET ${updates.join(', ')} WHERE id = ?`;
+
+  db.run(sql, params, function(err) {
+    if (err) return res.status(500).json({ error: 'Error actualizando usuario' });
+    db.get('SELECT id, email, name, role FROM users WHERE id = ?', [req.user.id], (err, user) => {
+      if (err) return res.status(500).json({ error: 'Error obteniendo usuario actualizado' });
+      if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+      res.json(user);
+    });
+  });
+});
+
 app.post('/api/orders', authMiddleware, (req, res) => {
   const { total, items } = req.body;
   if (!total || !items || !Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'Datos inválidos' });
