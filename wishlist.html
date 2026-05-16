@@ -47,7 +47,26 @@
         </div>
     </section>
 
-    <section class="wishlist-section">
+    <!-- Sección sin sesión -->
+    <section class="wishlist-section" id="wishlist-no-auth" style="display: none;">
+        <div class="contenedor-wishlist">
+            <div class="wishlist-no-auth-container">
+                <div class="icono-candado">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>Acceso Restringido</h2>
+                <p>Necesitas iniciar sesión para acceder a tu wishlist</p>
+                <div class="botones-auth">
+                    <a href="auth.html" class="boton boton-gradiente">Iniciar Sesión</a>
+                    <a href="auth.html?tab=registro" class="boton boton-secundario">Crear Cuenta</a>
+                </div>
+                <p class="texto-secundario">¿No tienes cuenta? <a href="auth.html?tab=registro">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección con sesión -->
+    <section class="wishlist-section" id="wishlist-auth">
         <div class="contenedor-wishlist">
             <div class="wishlist-header">
                 <h2>Productos Favoritos</h2>
@@ -68,6 +87,37 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // Verificar autenticación al cargar la página
+        function verificarAutenticacionWishlist() {
+            const token = localStorage.getItem('token');
+            const noAuthSection = document.getElementById('wishlist-no-auth');
+            const authSection = document.getElementById('wishlist-auth');
+            
+            if (!token) {
+                // No hay sesión iniciada
+                noAuthSection.style.display = 'block';
+                authSection.style.display = 'none';
+            } else {
+                // Hay sesión iniciada
+                noAuthSection.style.display = 'none';
+                authSection.style.display = 'block';
+                // Cargar wishlist
+                cargarWishlist();
+            }
+        }
+
+        // Ejecutar verificación al cargar la página
+        document.addEventListener('DOMContentLoaded', verificarAutenticacionWishlist);
+
+        // Escuchar cambios de autenticación (cuando el usuario inicia/cierra sesión)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'token') {
+                verificarAutenticacionWishlist();
+            }
+        });
+    </script>
 
     <footer class="pie-pagina">
         <div class="logo-pie">

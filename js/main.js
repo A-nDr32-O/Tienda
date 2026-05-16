@@ -669,18 +669,18 @@ const LOCAL_PRODUCTS = [
     { id: 1, name: "Apex Legends: Deluxe Edition", price: 59.99, image: "img/Apex_legends.jpg", category: "juegos", description: "Battle royale gratuito con contenido deluxe.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Shooter", "Multijugador: Sí", "Idioma: Español/Inglés"] },
     { id: 2, name: "Death Stranding: Deluxe Edition", price: 49.99, image: "img/Death_Stranding.webp", category: "juegos", description: "Aventura de exploración con historia inmersiva.", specifications: ["Plataforma: PS4/PS5/PC", "Género: Acción/Aventura", "Duración: 40+ horas", "Idioma: Español/Inglés"] },
     { id: 3, name: "Cyberpunk 2077", price: 39.99, image: "img/Cyberpunk_2077.jpg", category: "juegos", description: "RPG futurista en Night City.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: RPG", "Modo: Un jugador", "Idioma: Español/Inglés"] },
-    { id: 4, name: "FIFA 24", price: 69.99, image: "img/placeholder.svg", category: "juegos", description: "Simulador de fútbol con modos de carrera y Ultimate Team.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Deportes", "Multijugador: Sí", "Idioma: Español/Inglés"] },
-    { id: 5, name: "Grand Theft Auto V", price: 29.99, image: "img/placeholder.svg", category: "juegos", description: "Mundo abierto con campaña y GTA Online.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Acción/Aventura", "Multijugador: Sí", "Idioma: Español/Inglés"] },
-    { id: 6, name: "The Last of Us Part II", price: 49.99, image: "img/placeholder.svg", category: "juegos", description: "Aventura post-apocalíptica con narrativa emocional.", specifications: ["Plataforma: PS4", "Género: Acción/Aventura", "Duración: 20+ horas", "Idioma: Español/Inglés"] },
+    { id: 4, name: "FIFA 24", price: 69.99, image: "img/fifa.jpg", category: "juegos", description: "Simulador de fútbol con modos de carrera y Ultimate Team.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Deportes", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 5, name: "Grand Theft Auto V", price: 29.99, image: "img/gta.jpg", category: "juegos", description: "Mundo abierto con campaña y GTA Online.", specifications: ["Plataforma: PC/PS5/Xbox", "Género: Acción/Aventura", "Multijugador: Sí", "Idioma: Español/Inglés"] },
+    { id: 6, name: "The Last of Us Part II", price: 49.99, image: "img/the-last-of-us.jpg", category: "juegos", description: "Aventura post-apocalíptica con narrativa emocional.", specifications: ["Plataforma: PS4", "Género: Acción/Aventura", "Duración: 20+ horas", "Idioma: Español/Inglés"] },
     { id: 7, name: "PlayStation 5", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Sony.", specifications: ["CPU: AMD Zen 2", "GPU: 10.28 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 825GB SSD"] },
-    { id: 8, name: "Xbox Series X", price: 499.99, image: "img/ps5.png", category: "consolas", description: "Consola de nueva generación de Microsoft.", specifications: ["CPU: AMD Zen 2", "GPU: 12 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 1TB SSD"] },
-    { id: 9, name: "Nintendo Switch OLED", price: 349.99, image: "img/ps5.png", category: "consolas", description: "Consola híbrida con pantalla OLED.", specifications: ["Pantalla: 7' OLED", "CPU: NVIDIA Tegra", "RAM: 4GB", "Almacenamiento: 64GB"] },
-    { id: 10, name: "PlayStation 4", price: 299.99, image: "img/ps5 vertical.png", category: "consolas", description: "Consola de anterior generación con amplio catálogo.", specifications: ["CPU: AMD Jaguar", "GPU: 1.84 TFLOPs", "RAM: 8GB GDDR5", "Almacenamiento: 500GB"] },
+    { id: 8, name: "Xbox Series X", price: 499.99, image: "img/xbox-series-x.png", category: "consolas", description: "Consola de nueva generación de Microsoft.", specifications: ["CPU: AMD Zen 2", "GPU: 12 TFLOPs", "RAM: 16GB GDDR6", "Almacenamiento: 1TB SSD"] },
+    { id: 9, name: "Nintendo Switch OLED", price: 349.99, image: "img/nintendo-switch.png", category: "consolas", description: "Consola híbrida con pantalla OLED.", specifications: ["Pantalla: 7' OLED", "CPU: NVIDIA Tegra", "RAM: 4GB", "Almacenamiento: 64GB"] },
+    { id: 10, name: "PlayStation 4", price: 299.99, image: "img/Ps4_vertical.png", category: "consolas", description: "Consola de anterior generación con amplio catálogo.", specifications: ["CPU: AMD Jaguar", "GPU: 1.84 TFLOPs", "RAM: 8GB GDDR5", "Almacenamiento: 500GB"] },
     { id: 11, name: "Headset Gaming RGB", price: 89.99, image: "img/headset.png", category: "accesorios", description: "Audífonos gaming con RGB y micrófono desmontable.", specifications: ["Tipo: Over-ear", "Conectividad: USB/3.5mm", "Iluminación: RGB", "Micrófono: Cancelación de ruido"] },
-    { id: 12, name: "Teclado Mecánico Gaming", price: 129.99, image: "img/headset.png", category: "accesorios", description: "Teclado con switches mecánicos y RGB.", specifications: ["Switches: Cherry MX", "Conectividad: USB", "Layout: QWERTY", "Iluminación: RGB"] },
-    { id: 13, name: "Mouse Gaming RGB", price: 79.99, image: "img/headset.png", category: "accesorios", description: "Mouse ergonómico con DPI ajustable.", specifications: ["Sensor: Óptico", "DPI: 200-16000", "Botones: 6", "Iluminación: RGB"] },
-    { id: 14, name: "Monitor Gaming 144Hz", price: 299.99, image: "img/headset.png", category: "accesorios", description: "Monitor de 144Hz con tiempo de respuesta 1ms.", specifications: ["Tamaño: 27'", "Resolución: 2560x1440", "Frecuencia: 144Hz", "Tecnología: G-Sync"] },
-    { id: 15, name: "Silla Gaming Ergonómica", price: 249.99, image: "img/headset.png", category: "accesorios", description: "Silla gaming ajustable con soporte lumbar.", specifications: ["Material: PU", "Peso max: 150kg", "Inclinación: 180°", "Garantía: 2 años"] }
+    { id: 12, name: "Teclado Mecánico Gaming", price: 129.99, image: "img/Teclado_Mecánico_Gaming.png", category: "accesorios", description: "Teclado con switches mecánicos y RGB.", specifications: ["Switches: Cherry MX", "Conectividad: USB", "Layout: QWERTY", "Iluminación: RGB"] },
+    { id: 13, name: "Mouse Gaming RGB", price: 79.99, image: "img/Mouse_Gaming_RGB.png", category: "accesorios", description: "Mouse ergonómico con DPI ajustable.", specifications: ["Sensor: Óptico", "DPI: 200-16000", "Botones: 6", "Iluminación: RGB"] },
+    { id: 14, name: "Monitor Gaming 144Hz", price: 299.99, image: "img/Monitor_Gaming_144Hz.png", category: "accesorios", description: "Monitor de 144Hz con tiempo de respuesta 1ms.", specifications: ["Tamaño: 27'", "Resolución: 2560x1440", "Frecuencia: 144Hz", "Tecnología: G-Sync"] },
+    { id: 15, name: "Silla Gaming Ergonómica", price: 249.99, image: "img/Silla_Gaming_Ergonómica.png", category: "accesorios", description: "Silla gaming ajustable con soporte lumbar.", specifications: ["Material: PU", "Peso max: 150kg", "Inclinación: 180°", "Garantía: 2 años"] }
 ];
 
 async function fetchProductos() {
@@ -727,6 +727,7 @@ async function cargarProductosCatalogo() {
 
     const filtros = document.querySelectorAll('.filtros button');
     const busqueda = document.getElementById('busqueda');
+    const botonBusqueda = document.querySelector('.barra-busqueda i');
     const paginacion = document.querySelector('.paginacion');
     const productosPorPagina = 6;
     let categoriaActual = 'todos';
@@ -744,12 +745,13 @@ async function cargarProductosCatalogo() {
             visibles = visibles.filter(p => (p.name || p.nombre).toLowerCase().includes(terminoBusqueda.toLowerCase()));
         }
 
-        const totalPaginas = Math.ceil(visibles.length / productosPorPagina);
-        const inicio = (paginaActual - 1) * productosPorPagina;
-        const fin = inicio + productosPorPagina;
+        const paginaSize = (categoriaActual === 'todos' && !terminoBusqueda.trim()) ? visibles.length : productosPorPagina;
+        const totalPaginas = Math.max(1, Math.ceil(visibles.length / paginaSize));
+        const inicio = (paginaActual - 1) * paginaSize;
+        const fin = inicio + paginaSize;
         const paginaProductos = visibles.slice(inicio, fin);
 
-        contenedor.innerHTML = paginaProductos.map(p => {
+        const html = paginaProductos.map(p => {
             const name = p.name || p.nombre;
             const price = p.price || p.precio;
             const image = p.image || p.imagen;
@@ -770,24 +772,32 @@ async function cargarProductosCatalogo() {
             `;
         }).join('');
 
-        // Paginación visual
-        paginacion.innerHTML = '';
-        for (let i = 1; i <= totalPaginas; i++) {
-            const btn = document.createElement('button');
-            btn.className = 'pagina-btn' + (i === paginaActual ? ' pagina-activa' : '');
-            btn.textContent = i;
-            btn.dataset.pagina = i;
-            btn.addEventListener('click', () => {
-                paginaActual = i;
-                renderizarProductos();
-            });
-            paginacion.appendChild(btn);
-        }
+        contenedor.classList.add('fade-out');
+        setTimeout(() => {
+            contenedor.innerHTML = html;
+            contenedor.classList.remove('fade-out');
+            contenedor.classList.add('fade-in');
+            setTimeout(() => contenedor.classList.remove('fade-in'), 250);
 
-        document.querySelectorAll('.boton-carrito').forEach(btn => btn.addEventListener('click', (ev) => {
-            ev.preventDefault();
-            window.carrito?.mostrarModal();
-        }));
+            // Paginación visual
+            paginacion.innerHTML = '';
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'pagina-btn' + (i === paginaActual ? ' pagina-activa' : '');
+                btn.textContent = i;
+                btn.dataset.pagina = i;
+                btn.addEventListener('click', () => {
+                    paginaActual = i;
+                    renderizarProductos();
+                });
+                paginacion.appendChild(btn);
+            }
+
+            document.querySelectorAll('.boton-carrito').forEach(btn => btn.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                window.carrito?.mostrarModal();
+            }));
+        }, 250);
     };
 
     filtros.forEach(filtro => {
@@ -796,10 +806,34 @@ async function cargarProductosCatalogo() {
             this.classList.add('filtro-activo');
             categoriaActual = this.dataset.categoria;
             paginaActual = 1;
+
+            if (categoriaActual === 'todos') {
+                terminoBusqueda = '';
+                if (busqueda) {
+                    busqueda.value = '';
+                }
+            }
+
             renderizarProductos();
         });
     });
+
+    if (busqueda) {
+        busqueda.addEventListener('input', function() {
+            terminoBusqueda = this.value;
+            paginaActual = 1;
+            renderizarProductos();
+        });
     }
+
+    if (botonBusqueda) {
+        botonBusqueda.addEventListener('click', () => {
+            terminoBusqueda = busqueda?.value || '';
+            paginaActual = 1;
+            renderizarProductos();
+        });
+    }
+}
 
 async function cargarDetalleProducto() {
     const agregarBtn = document.getElementById('agregar-carrito');

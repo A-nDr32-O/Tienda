@@ -227,6 +227,13 @@ function agregarBotonesWishlist() {
 }
 
 function toggleWishlist(productId) {
+    // Verificar si el usuario ha iniciado sesión
+    const token = localStorage.getItem('token');
+    if (!token) {
+        mostrarNotificacion('Debes iniciar sesión para usar la wishlist', 'warning');
+        return;
+    }
+
     const wishlist = obtenerWishlist();
     const index = wishlist.indexOf(productId);
 
@@ -273,6 +280,70 @@ function actualizarBotonesWishlist() {
             boton.classList.toggle('active', enWishlist);
         }
     });
+}
+
+// ===== CARGAR Y RENDERIZAR WISHLIST =====
+async function cargarWishlist() {
+    try {
+        const wishlist = obtenerWishlist();
+        const container = document.getElementById('wishlist-container');
+        const contadorProductos = document.getElementById('contador-productos');
+        const wishlistVacia = document.getElementById('wishlist-vacia');
+        
+        if (!container) return;
+
+        // Obtener todos los productos
+        const productos = await fetchProductos();
+        
+        // Filtrar productos que están en la wishlist
+        const productosWishlist = productos.filter(p => wishlist.includes(p.id));
+
+        // Actualizar contador
+        if (contadorProductos) {
+            contadorProductos.textContent = `${productosWishlist.length} producto${productosWishlist.length !== 1 ? 's' : ''} en tu wishlist`;
+        }
+
+        // Mostrar/ocultar sección vacía
+        if (wishlistVacia) {
+            wishlistVacia.style.display = productosWishlist.length === 0 ? 'block' : 'none';
+        }
+
+        // Limpiar contenedor
+        container.innerHTML = '';
+
+        // Renderizar productos
+        productosWishlist.forEach(producto => {
+            const tarjeta = document.createElement('div');
+            tarjeta.className = 'tarjeta-producto';
+            tarjeta.dataset.id = producto.id;
+            tarjeta.innerHTML = `
+                <div class="imagen-producto">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='img/placeholder.svg'">
+                </div>
+                <div class="contenido-tarjeta">
+                    <h3 class="nombre-producto">${producto.nombre}</h3>
+                    <div class="categoria-producto">${producto.categoria}</div>
+                    <p class="descripcion-producto">${producto.descripcion}</p>
+                    <div class="precio-producto">
+                        $${producto.precio.toLocaleString('es-CO')}
+                    </div>
+                    <div class="botones-tarjeta">
+                        <button class="boton boton-carrito" onclick="agregarAlCarrito(${producto.id})">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+                <button class="btn-wishlist active" onclick="toggleWishlist(${producto.id})">
+                    <i class="fas fa-heart"></i>
+                </button>
+            `;
+            container.appendChild(tarjeta);
+        });
+
+        actualizarContadorWishlist();
+    } catch (error) {
+        console.error('Error cargando wishlist:', error);
+    }
 }
 
 // ===== INTEGRACIÓN CON REDES SOCIALES =====
@@ -377,8 +448,9 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     // Crear notificación
     const notificacion = document.createElement('div');
     notificacion.className = `notificacion notificacion-${tipo}`;
+    const icono = tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : tipo === 'warning' ? 'exclamation-triangle' : 'info-circle';
     notificacion.innerHTML = `
-        <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <i class="fas fa-${icono}"></i>
         <span>${mensaje}</span>
         <button class="cerrar-notificacion" onclick="this.parentElement.remove()">&times;</button>
     `;

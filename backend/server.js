@@ -58,13 +58,7 @@ db.exec(initDbSql, (err) => {
 const uploadsDir = path.join(__dirname, '../img/uploads');
 fs.mkdirSync(uploadsDir, { recursive: true });
 
-const storage = multer.diskStorage({
-  destination: uploadsDir,
-  filename: (req, file, cb) => {
-    const safeName = `${Date.now()}-${file.originalname.replace(/[^a-z0-9._-]/gi, '_')}`;
-    cb(null, safeName);
-  }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -153,8 +147,11 @@ app.post('/api/upload', authMiddleware, (req, res) => {
       return res.status(400).json({ error: 'No se envió ninguna imagen' });
     }
 
-    const imagePath = `/img/uploads/${req.file.filename}`;
-    res.json({ image: imagePath });
+    const mimeType = req.file.mimetype || 'application/octet-stream';
+    const base64Data = req.file.buffer.toString('base64');
+    const imageData = `data:${mimeType};base64,${base64Data}`;
+
+    res.json({ image: imageData });
   });
 });
 
