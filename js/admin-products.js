@@ -1,11 +1,23 @@
 // admin-products.js - Gestión de productos para admins
 const API_BASE = 'http://localhost:3000/api';
+let editingProductId = null;
+let currentProductImage = '';
+
+function formatearPrecioCOP(valor) {
+    if (valor == null || valor === '') return '';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(valor));
+}
 
 document.addEventListener('DOMContentLoaded', async function() {
     // Verificar autenticación en el backend y actualizar datos del usuario
     if (!(await checkAdminUser())) {
         alert('Acceso denegado: Solo administradores');
-        window.location.href = 'index.html';
+        fadeAndNavigate('index.html');
         return;
     }
 
@@ -20,6 +32,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     const productForm = document.getElementById('productForm');
     if (productForm) {
         productForm.addEventListener('submit', handleCreateProduct);
+    }
+
+    const cancelEditButton = document.getElementById('cancelEditButton');
+    if (cancelEditButton) {
+        cancelEditButton.addEventListener('click', resetProductForm);
     }
 });
 
@@ -63,6 +80,15 @@ async function loadProductos() {
     }
 }
 
+async function parseResponse(response) {
+    const text = await response.text();
+    try {
+        return { ok: response.ok, data: JSON.parse(text) };
+    } catch {
+        return { ok: response.ok, data: text };
+    }
+}
+
 function displayProductos(productos) {
     const container = document.getElementById('productosList');
     
@@ -81,11 +107,14 @@ function displayProductos(productos) {
             <div class="producto-item-info">
                 <h3>${p.name}</h3>
                 <p><strong>Categoría:</strong> ${p.category}</p>
-                <p><strong>Precio:</strong> $${p.price.toFixed(2)}</p>
+                <p><strong>Precio:</strong> ${formatearPrecioCOP(p.price)}</p>
                 <p><strong>Stock:</strong> ${p.stock} unidades</p>
                 <p><strong>Descripción:</strong> ${p.description}</p>
             </div>
             <div class="producto-item-actions">
+                <button class="btn-edit" onclick="editProduct(${p.id})">
+                    Editar
+                </button>
                 <button class="btn-delete" onclick="deleteProduct(${p.id})">
                     Eliminar
                 </button>
@@ -111,53 +140,99 @@ async function handleCreateProduct(e) {
     };
 
     // Validar
-    if (!formData.name || !formData.category || !formData.price || !imageFile || !formData.description) {
+    if (!formData.name || !formData.category || !formData.price || !formData.description || (!editingProductId && !imageFile)) {
         messageDiv.className = 'message error';
         messageDiv.textContent = '✗ Todos los campos son requeridos';
         return;
     }
 
     try {
-        const uploadData = new FormData();
-        uploadData.append('image', imageFile);
+        if (editingProductId) {
+            if (imageFile) {
+                const uploadData = new FormData();
+                uploadData.append('image', imageFile);
 
-        const uploadResponse = await fetch(`${API_BASE}/upload`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: uploadData
-        });
+                const uploadResponse = await fetch(`${API_BASE}/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: uploadData
+                });
 
-        const uploadResult = await uploadResponse.json();
-        if (!uploadResponse.ok) {
-            throw new Error(uploadResult.error || 'Error subiendo la imagen');
+                const uploadResult = await uploadResponse.json();
+                if (!uploadResponse.ok) {
+                    throw new Error(uploadResult.error || 'Error subiendo la imagen');
+                }
+
+                formData.image = uploadResult.image;
+            } else {
+                formData.image = currentProductImage;
+            }
+
+            const response = await fetch(`${API_BASE}/products/${editingProductId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await parseResponse(response);
+            if (!response.ok) {
+                const errorMessage = result.data?.error || result.data || 'Error actualizando producto';
+                throw new Error(errorMessage);
+            }
+
+            messageDiv.className = 'message success';
+            messageDiv.textContent = '✓ Producto actualizado correctamente';
+        } else {
+            if (!imageFile) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '✗ La imagen es obligatoria al crear un producto';
+                return;
+            }
+
+            const uploadData = new FormData();
+            uploadData.append('image', imageFile);
+
+            const uploadResponse = await fetch(`${API_BASE}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: uploadData
+            });
+
+            const uploadResult = await parseResponse(uploadResponse);
+            if (!uploadResponse.ok) {
+                const errorMessage = uploadResult.data?.error || uploadResult.data || 'Error subiendo la imagen';
+                throw new Error(errorMessage);
+            }
+
+            formData.image = uploadResult.data.image;
+
+            const response = await fetch(`${API_BASE}/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await parseResponse(response);
+            if (!response.ok) {
+                const errorMessage = result.data?.error || result.data || 'Error creando producto';
+                throw new Error(errorMessage);
+            }
+
+            messageDiv.className = 'message success';
+            messageDiv.textContent = '✓ Producto creado exitosamente!';
         }
 
-        formData.image = uploadResult.image;
-
-        const response = await fetch(`${API_BASE}/products`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Error creando producto');
-        }
-
-        messageDiv.className = 'message success';
-        messageDiv.textContent = '✓ Producto creado exitosamente!';
-
-        // Limpiar formulario
-        document.getElementById('productForm').reset();
-
-        // Recargar productos
+        resetProductForm();
         setTimeout(() => {
             loadProductos();
             messageDiv.textContent = '';
@@ -203,10 +278,55 @@ async function deleteProduct(productId) {
     }
 }
 
+function editProduct(productId) {
+    const messageDiv = document.getElementById('productMessage');
+    messageDiv.className = 'message';
+    messageDiv.textContent = '';
+
+    fetch(`${API_BASE}/products/${productId}`)
+        .then(response => {
+            if (!response.ok) throw new Error('No se pudo cargar el producto');
+            return response.json();
+        })
+        .then(product => {
+            editingProductId = product.id;
+            currentProductImage = product.image || '';
+
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productStock').value = product.stock;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productImage').required = false;
+            document.getElementById('submitProductButton').textContent = 'Guardar cambios';
+            document.getElementById('cancelEditButton').style.display = 'block';
+        })
+        .catch(error => {
+            messageDiv.className = 'message error';
+            messageDiv.textContent = `✗ ${error.message}`;
+        });
+}
+
+function resetProductForm() {
+    editingProductId = null;
+    currentProductImage = '';
+    document.getElementById('productForm').reset();
+    document.getElementById('productId').value = '';
+    document.getElementById('productImage').required = true;
+    document.getElementById('submitProductButton').textContent = 'Crear Producto';
+    document.getElementById('cancelEditButton').style.display = 'none';
+}
+
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = 'auth.html';
+    fadeAndNavigate('auth.html');
+}
+
+function fadeAndNavigate(url) {
+    document.body.classList.add('fade-page-out');
+    setTimeout(() => window.location.href = url, 250);
 }
 
 // Funciones de autenticación (desde auth.js)

@@ -31,8 +31,18 @@ function inicializarSistemaResenas() {
 function cargarResenasProducto(productId) {
     // Cargar reseñas desde localStorage (en producción sería desde API)
     const resenas = obtenerResenasProducto(productId);
-    mostrarResenas(resenas);
+    mostrarResenas(resenas, productId);
     actualizarRatingPromedio(resenas);
+}
+
+function formatearPrecioCOP(valor) {
+    if (valor == null || valor === '') return '';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(valor));
 }
 
 function obtenerResenasProducto(productId) {
@@ -40,7 +50,7 @@ function obtenerResenasProducto(productId) {
     return todasResenas[productId] || [];
 }
 
-function mostrarResenas(resenas) {
+function mostrarResenas(resenas, productId) {
     const contenedorResenas = document.querySelector('.resenas-container');
     if (!contenedorResenas) return;
 
@@ -78,6 +88,7 @@ function mostrarResenas(resenas) {
                 <button class="btn-util" onclick="marcarUtil(this)">
                     <i class="fas fa-thumbs-up"></i> Útil (${resena.util || 0})
                 </button>
+                ${esAdmin() ? `<button class="btn-eliminar-resena" onclick="eliminarResena('${productId}', ${resena.id})"><i class="fas fa-trash-alt"></i> Eliminar</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -90,11 +101,10 @@ function actualizarRatingPromedio(resenas) {
     const contenedorRating = document.querySelector('.rating');
 
     if (contenedorRating) {
-        contenedorRating.innerHTML = generarEstrellas(Math.round(promedio));
-        const spanRating = contenedorRating.querySelector('span');
-        if (spanRating) {
-            spanRating.textContent = `${promedio.toFixed(1)} (${resenas.length} reseñas)`;
-        }
+        contenedorRating.innerHTML = `
+            ${generarEstrellas(Math.round(promedio))}
+            <span>${promedio.toFixed(1)} (${resenas.length} reseñas)</span>
+        `;
     }
 }
 
@@ -143,6 +153,7 @@ function inicializarFormularioResena(productId) {
 
         guardarResena(productId, nuevaResena);
         mostrarNotificacion('¡Reseña publicada exitosamente!', 'success');
+        alert('Tu reseña se ha enviado correctamente. Gracias por tu opinión.');
 
         // Limpiar formulario
         this.reset();
@@ -161,6 +172,28 @@ function guardarResena(productId, resena) {
     }
     todasResenas[productId].unshift(resena); // Agregar al inicio
     localStorage.setItem('resenas', JSON.stringify(todasResenas));
+}
+
+function esAdmin() {
+    try {
+        const user = window.getUser ? window.getUser() : JSON.parse(localStorage.getItem('user') || 'null');
+        return user && user.role === 'admin';
+    } catch {
+        return false;
+    }
+}
+
+function eliminarResena(productId, reviewId) {
+    if (!esAdmin()) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar esta reseña?')) return;
+
+    const todasResenas = JSON.parse(localStorage.getItem('resenas') || '{}');
+    const productoResenas = todasResenas[productId] || [];
+    const filtradas = productoResenas.filter(r => String(r.id) !== String(reviewId));
+    todasResenas[productId] = filtradas;
+    localStorage.setItem('resenas', JSON.stringify(todasResenas));
+    mostrarNotificacion('Reseña eliminada correctamente', 'success');
+    cargarResenasProducto(productId);
 }
 
 function actualizarEstrellasSeleccionadas(estrellas, rating) {
@@ -325,7 +358,7 @@ async function cargarWishlist() {
                     <div class="categoria-producto">${producto.categoria}</div>
                     <p class="descripcion-producto">${producto.descripcion}</p>
                     <div class="precio-producto">
-                        $${producto.precio.toLocaleString('es-CO')}
+                        ${formatearPrecioCOP(producto.precio)}
                     </div>
                     <div class="botones-tarjeta">
                         <button class="boton boton-carrito" onclick="agregarAlCarrito(${producto.id})">

@@ -20,6 +20,12 @@
 body {
     background-color: #fff;
     color: var(--texto-principal);
+    transition: opacity 0.3s ease;
+}
+
+body.fade-page-out {
+    opacity: 0;
+    pointer-events: none;
 }
 
 a {
@@ -2248,6 +2254,24 @@ select {
     background: var(--lila-pastel);
     color: white;
     cursor: default;
+}
+
+.btn-eliminar-resena {
+    margin-left: 10px;
+    background: none;
+    border: 2px solid #ff5252;
+    color: #ff5252;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-eliminar-resena:hover {
+    background: #ff5252;
+    color: white;
 }
 
 /* Botón de wishlist */

@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         registerForm.addEventListener('submit', handleRegister);
     }
 
+    // Mostrar el formulario de registro si se indica en la URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'registro') {
+        document.getElementById('loginForm').classList.remove('active');
+        document.getElementById('registerForm').classList.add('active');
+    }
+
     // Verificar si ya existe token y validar datos contra la base de datos
     const token = getToken();
 
@@ -28,21 +35,27 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const meUser = await response.json();
                 localStorage.setItem('user', JSON.stringify(meUser));
 
-                if (meUser.role === 'admin') {
-                    window.location.href = 'admin-productos.html';
-                } else {
-                    window.location.href = 'index.html';
+                const loginMessage = document.getElementById('loginMessage');
+                if (loginMessage) {
+                    loginMessage.className = 'message success';
+                    loginMessage.textContent = 'Ya estás autenticado. Pulsa volver para regresar a la tienda.';
                 }
-            } else {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
+                return;
             }
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
         } catch (error) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
     }
 });
+
+function fadeAndNavigate(url) {
+    document.body.classList.add('fade-page-out');
+    setTimeout(() => window.location.href = url, 250);
+}
 
 function toggleForms() {
     document.getElementById('loginForm').classList.toggle('active');
@@ -82,11 +95,7 @@ async function handleLogin(e) {
         messageDiv.textContent = '✓ Login exitoso. Redirigiendo...';
 
         setTimeout(() => {
-            if (data.user.role === 'admin') {
-                window.location.href = 'admin-productos.html';
-            } else {
-                window.location.href = 'index.html';
-            }
+            fadeAndNavigate('index.html');
         }, 1500);
 
     } catch (error) {
@@ -133,7 +142,7 @@ async function handleRegister(e) {
 
         setTimeout(() => {
             // Redirigir a página de inicio (usuarios normales no pueden acceder a admin)
-            window.location.href = 'index.html';
+            fadeAndNavigate('index.html');
         }, 1500);
 
     } catch (error) {
@@ -145,7 +154,7 @@ async function handleRegister(e) {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = 'auth.html';
+    fadeAndNavigate('auth.html');
 }
 
 // Verificar si el usuario está autenticado y obtener token
@@ -161,7 +170,7 @@ function getUser() {
 // Verificar autenticación
 function requireAuth() {
     if (!getToken()) {
-        window.location.href = 'auth.html';
+        fadeAndNavigate('auth.html');
         return false;
     }
     return true;
@@ -172,7 +181,7 @@ function requireAdmin() {
     const user = getUser();
     if (!user || user.role !== 'admin') {
         alert('Acceso denegado: Requiere permisos de administrador');
-        window.location.href = 'index.html';
+        fadeAndNavigate('index.html');
         return false;
     }
     return true;

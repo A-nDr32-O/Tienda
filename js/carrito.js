@@ -1,4 +1,14 @@
 // Sistema de Carrito de Compras
+function formatearPrecioCOP(valor) {
+    if (valor == null || valor === '') return '';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(valor));
+}
+
 class Carrito {
     constructor() {
         this.items = this.cargarCarrito();
@@ -128,7 +138,7 @@ class Carrito {
             descuento = subtotal * 0.1;
         }
 
-        // Aplicar descuento del 5% si el total supera $200
+        // Aplicar descuento del 5% si el total supera COP 200
         if (subtotal > 200) {
             descuento = Math.max(descuento, subtotal * 0.05);
         }
@@ -174,15 +184,15 @@ class Carrito {
                     <div class="carrito-totales">
                         <div class="total-item">
                             <span>Subtotal:</span>
-                            <span id="subtotal">$0.00</span>
+                            <span id="subtotal">COP 0,00</span>
                         </div>
                         <div class="total-item descuento" id="descuento-item" style="display: none;">
                             <span>Descuento:</span>
-                            <span id="descuento">-$0.00</span>
+                            <span id="descuento">-COP 0,00</span>
                         </div>
                         <div class="total-item total-final">
                             <span>Total:</span>
-                            <span id="total-final">$0.00</span>
+                            <span id="total-final">COP 0,00</span>
                         </div>
                     </div>
                     <div class="carrito-acciones">
@@ -219,7 +229,7 @@ class Carrito {
                 <img src="${item.imagen}" alt="${item.nombre}">
                 <div class="item-info">
                     <h4>${item.nombre}</h4>
-                    <p class="item-precio">$${item.precio.toFixed(2)}</p>
+                    <p class="item-precio">${formatearPrecioCOP(item.precio)}</p>
                 </div>
                 <div class="item-cantidad">
                     <button class="cantidad-btn disminuir">-</button>
@@ -227,7 +237,7 @@ class Carrito {
                     <button class="cantidad-btn aumentar">+</button>
                 </div>
                 <div class="item-subtotal">
-                    <p>$${(item.precio * item.cantidad).toFixed(2)}</p>
+                    <p>${formatearPrecioCOP(item.precio * item.cantidad)}</p>
                 </div>
                 <button class="eliminar-item">
                     <i class="fa-solid fa-trash"></i>
@@ -237,19 +247,19 @@ class Carrito {
 
         // Actualizar totales
         const totales = this.calcularTotalConDescuento();
-        document.getElementById('subtotal').textContent = `$${totales.subtotal.toFixed(2)}`;
+        document.getElementById('subtotal').textContent = formatearPrecioCOP(totales.subtotal);
 
         const descuentoItem = document.getElementById('descuento-item');
         const descuentoSpan = document.getElementById('descuento');
 
         if (totales.descuento > 0) {
             descuentoItem.style.display = 'flex';
-            descuentoSpan.textContent = `-$${totales.descuento.toFixed(2)}`;
+            descuentoSpan.textContent = `-${formatearPrecioCOP(totales.descuento)}`;
         } else {
             descuentoItem.style.display = 'none';
         }
 
-        document.getElementById('total-final').textContent = `$${totales.total.toFixed(2)}`;
+        document.getElementById('total-final').textContent = formatearPrecioCOP(totales.total);
 
         // Agregar event listeners a los botones de cantidad y eliminar
         this.agregarEventosCarrito();

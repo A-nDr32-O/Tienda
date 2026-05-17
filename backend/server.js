@@ -6,13 +6,34 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'enemies_secret_2026';
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_PORT = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'soporte@elenemigos.com';
+const CONTACT_NAME = process.env.CONTACT_NAME || 'El Enemigos';
+
+const transporter = nodemailer.createTransport({
+  host: SMTP_HOST,
+  port: SMTP_PORT,
+  secure: SMTP_PORT === 465,
+  auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
+});
+
+if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+  transporter.verify().then(() => console.log('Servidor SMTP listo para enviar correos')).catch(err => console.warn('Error verificando SMTP:', err.message));
+} else {
+  console.warn('SMTP no configurado: configure SMTP_HOST, SMTP_PORT, SMTP_USER y SMTP_PASS en el entorno');
+}
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 app.use(express.static('../'));
 
 const db = new sqlite3.Database('./database.db', (err) => {
@@ -62,7 +83,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 12 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['.png', '.jpg', '.jpeg'];
     const ext = path.extname(file.originalname).toLowerCase();
@@ -153,6 +174,56 @@ app.post('/api/upload', authMiddleware, (req, res) => {
 
     res.json({ image: imageData });
   });
+});
+
+app.post('/api/contact', async (req, res) => {
+  const { nombre, email, asunto, mensaje } = req.body;
+  if (!nombre || !email || !asunto || !mensaje) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+    return res.status(500).json({ error: 'El servidor de correo no está configurado' });
+  }
+
+  const ownerMailOptions = {
+    from: `${CONTACT_NAME} <${CONTACT_EMAIL}>`,
+    to: CONTACT_EMAIL,
+    subject: `Nuevo mensaje de contacto: ${asunto}`,
+    replyTo: email,
+    html: `
+      <h2>Nuevo mensaje desde el formulario de contacto</h2>
+      <p><strong>Nombre:</strong> ${nombre}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Asunto:</strong> ${asunto}</p>
+      <p><strong>Mensaje:</strong></p>
+      <p>${mensaje.replace(/\n/g, '<br>')}</p>
+    `
+  };
+
+  const userMailOptions = {
+    from: `${CONTACT_NAME} <${CONTACT_EMAIL}>`,
+    to: email,
+    subject: `Hemos recibido tu mensaje: ${asunto}`,
+    html: `
+      <p>Hola ${nombre},</p>
+      <p>Gracias por escribirnos. Hemos recibido tu mensaje y te responderemos en breve.</p>
+      <hr>
+      <p><strong>Asunto:</strong> ${asunto}</p>
+      <p><strong>Mensaje:</strong></p>
+      <p>${mensaje.replace(/\n/g, '<br>')}</p>
+      <p>Saludos,<br>${CONTACT_NAME}</p>
+    `
+  };
+
+  try {
+    await transporter.sendMail(ownerMailOptions);
+    await transporter.sendMail(userMailOptions);
+    res.json({ success: true, message: 'Mensaje enviado correctamente' });
+  } catch (error) {
+    console.error('Error enviando correo de contacto:', error);
+    res.status(500).json({ error: 'No se pudo enviar el correo. Revise la configuración del servidor.' });
+  }
 });
 
 app.post('/api/auth/register', (req, res) => {

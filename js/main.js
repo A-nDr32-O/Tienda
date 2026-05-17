@@ -1,5 +1,15 @@
 // main.js - Funcionalidades principales del sitio
 
+function formatearPrecioCOP(valor) {
+    if (valor == null || valor === '') return '';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(valor));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar compatibilidad del navegador
     verificarCompatibilidadNavegador();
@@ -19,8 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar menú de usuario
     inicializarUserMenu();
 
+    // Mostrar botón de admin si corresponde
+    inicializarAdminButton();
+
     // Inicializar animaciones de entrada
     inicializarAnimaciones();
+
+    // Agregar transición suave en los enlaces a autenticación
+    setupAuthLinkTransitions();
 
     // Inicializar catálogo y detalle producto con la API
     inicializarPaginaApi();
@@ -204,11 +220,17 @@ function inicializarValidacionFormularios() {
     // Validación del formulario de contacto (si existe)
     const formContacto = document.querySelector('.formulario-contacto form');
     if (formContacto) {
-        formContacto.addEventListener('submit', function(e) {
+        formContacto.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const campos = this.querySelectorAll('input, textarea');
             let valido = true;
+            const formMessage = this.querySelector('#contactFormMessage');
+
+            if (formMessage) {
+                formMessage.className = 'message';
+                formMessage.textContent = '';
+            }
 
             campos.forEach(campo => {
                 if (campo.hasAttribute('required') && !campo.value.trim()) {
@@ -229,8 +251,40 @@ function inicializarValidacionFormularios() {
             }
 
             if (valido) {
-                mostrarMensajeExito('¡Mensaje enviado exitosamente! Te responderemos pronto.');
-                this.reset();
+                const payload = {
+                    nombre: this.querySelector('#nombre').value.trim(),
+                    email: this.querySelector('#email').value.trim(),
+                    asunto: this.querySelector('#asunto').value.trim(),
+                    mensaje: this.querySelector('#mensaje').value.trim()
+                };
+
+                try {
+                    const response = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Error enviando el mensaje');
+                    }
+
+                    if (formMessage) {
+                        formMessage.className = 'message success';
+                        formMessage.textContent = '¡Mensaje enviado! También recibirás una copia en tu correo.';
+                    }
+                    this.reset();
+                } catch (error) {
+                    if (formMessage) {
+                        formMessage.className = 'message error';
+                        formMessage.textContent = `Error: ${error.message}`;
+                    } else {
+                        alert(`Error: ${error.message}`);
+                    }
+                }
             }
         });
     }
@@ -412,10 +466,26 @@ function getUser() {
     return stored ? JSON.parse(stored) : null;
 }
 
+function fadeAndNavigate(url) {
+    document.body.classList.add('fade-page-out');
+    setTimeout(() => window.location.href = url, 250);
+}
+
+function setupAuthLinkTransitions() {
+    document.querySelectorAll('a[href^="auth.html"]:not(.user-menu-link)').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (e.defaultPrevented) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            fadeAndNavigate(this.href);
+        });
+    });
+}
+
 function logoutAndRedirect() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = 'auth.html';
+    fadeAndNavigate('auth.html');
 }
 
 function inicializarUserMenu() {
@@ -459,9 +529,8 @@ function inicializarUserMenu() {
 
         const user = getUser();
         if (!user) {
-            if (link.getAttribute('href') === 'auth.html') return;
             e.preventDefault();
-            window.location.href = 'auth.html';
+            fadeAndNavigate('auth.html');
             return;
         }
 
@@ -504,6 +573,18 @@ function inicializarUserMenu() {
     saveButton.addEventListener('click', async () => {
         await handleUserProfileUpdate(popup);
     });
+}
+
+function inicializarAdminButton() {
+    const adminButton = document.getElementById('adminPanelButton');
+    const user = getUser();
+    if (!adminButton) return;
+
+    if (user && user.role === 'admin') {
+        adminButton.style.display = 'block';
+    } else {
+        adminButton.style.display = 'none';
+    }
 }
 
 function updateUserPopup() {
@@ -734,6 +815,13 @@ async function cargarProductosCatalogo() {
     let terminoBusqueda = '';
     let paginaActual = 1;
 
+    const params = new URLSearchParams(window.location.search);
+    const categoriaInicial = params.get('categoria');
+    const categoriasValidas = ['todos', 'juegos', 'consolas', 'accesorios'];
+    if (categoriaInicial && categoriasValidas.includes(categoriaInicial)) {
+        categoriaActual = categoriaInicial;
+    }
+
     const renderizarProductos = () => {
         let visibles = productos;
 
@@ -763,7 +851,7 @@ async function cargarProductosCatalogo() {
                     <button class="btn-wishlist" onclick="toggleWishlist(${id})"><i class="${estaEnWishlist(id) ? 'fas' : 'far'} fa-heart"></i></button>
                     <img src="${image}" alt="${name}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
                     <h4>${name}</h4>
-                    <p class="precio">$${price.toFixed(2)}</p>
+                    <p class="precio">${formatearPrecioCOP(price)}</p>
                     <div class="botones-producto">
                         <a href="producto-detalle.html?id=${id}" class="boton boton-gradiente-claro">Ver Detalles</a>
                         <button onclick="agregarAlCarrito(${id})" class="boton boton-gradiente">Añadir al Carrito</button>
@@ -818,6 +906,10 @@ async function cargarProductosCatalogo() {
         });
     });
 
+    filtros.forEach(btn => {
+        btn.classList.toggle('filtro-activo', btn.dataset.categoria === categoriaActual);
+    });
+
     if (busqueda) {
         busqueda.addEventListener('input', function() {
             terminoBusqueda = this.value;
@@ -833,6 +925,9 @@ async function cargarProductosCatalogo() {
             renderizarProductos();
         });
     }
+
+    // Renderizar productos inmediatamente al cargar la página
+    renderizarProductos();
 }
 
 async function cargarDetalleProducto() {
@@ -853,6 +948,34 @@ async function cargarDetalleProducto() {
     const producto = await fetchProductoById(productoId);
     if (!producto) {
         return;
+    }
+
+    const nombreProducto = producto.name || producto.nombre;
+    const precioProducto = producto.price || producto.precio;
+    const imagenProducto = producto.image || producto.imagen;
+    const descripcionProducto = producto.description || producto.descripcion;
+    const especificaciones = producto.specifications || producto.especificaciones || [];
+
+    const tituloElemento = document.getElementById('titulo-producto');
+    const precioElemento = document.getElementById('precio-producto');
+    const imagenElemento = document.getElementById('imagen-producto');
+    const descripcionElemento = document.getElementById('descripcion-producto');
+    const listaEspecificaciones = document.getElementById('lista-especificaciones');
+
+    if (tituloElemento) tituloElemento.textContent = nombreProducto || 'Producto';
+    if (precioElemento) precioElemento.textContent = precioProducto ? formatearPrecioCOP(precioProducto) : '';
+    if (imagenElemento) {
+        imagenElemento.src = imagenProducto || 'img/placeholder.svg';
+        imagenElemento.alt = nombreProducto || 'Producto';
+    }
+    if (descripcionElemento) descripcionElemento.textContent = descripcionProducto || '';
+    if (listaEspecificaciones) {
+        listaEspecificaciones.innerHTML = '';
+        especificaciones.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            listaEspecificaciones.appendChild(li);
+        });
     }
 
     if (agregarBtn) {
@@ -884,7 +1007,7 @@ async function cargarDetalleProducto() {
                 <div class="tarjeta tarjeta-producto">
                     <img src="${image}" alt="${name}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
                     <h4>${name}</h4>
-                    <p class="precio">$${price.toFixed(2)}</p>
+                    <p class="precio">${formatearPrecioCOP(price)}</p>
                     <a href="producto-detalle.html?id=${p.id}" class="boton boton-gradiente-claro">Ver Detalles</a>
                 </div>
             `;

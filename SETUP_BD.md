@@ -65,3 +65,8 @@ En el panel admin (admin-productos.html):
 - El token JWT dura 8 horas
 - Los productos se guardan en la base de datos SQLite (`database.db`)
 - El carrito sigue guardándose en localStorage del navegador
+
+
+
+Email: admin@prueba.com
+Password: Admin1234!
