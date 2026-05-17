@@ -20,6 +20,12 @@
 body {
     background-color: #fff;
     color: var(--texto-principal);
+    transition: opacity 0.3s ease;
+}
+
+body.fade-page-out {
+    opacity: 0;
+    pointer-events: none;
 }
 
 a {
@@ -318,7 +324,8 @@ a {
 
 
 .tarjeta-producto {
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     padding: 20px;
     background-color: #fafafa;
     border: 2px solid #a9acac;
@@ -495,9 +502,21 @@ a {
 .grid-productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    opacity: 1;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.grid-productos.fade-out {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.grid-productos.fade-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .precio {
@@ -2237,6 +2256,24 @@ select {
     cursor: default;
 }
 
+.btn-eliminar-resena {
+    margin-left: 10px;
+    background: none;
+    border: 2px solid #ff5252;
+    color: #ff5252;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-eliminar-resena:hover {
+    background: #ff5252;
+    color: white;
+}
+
 /* Botón de wishlist */
 .btn-wishlist {
     position: absolute;
@@ -2334,6 +2371,11 @@ select {
 
 .notificacion-info {
     background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.notificacion-warning {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
     color: white;
 }
 
@@ -2509,6 +2551,107 @@ select {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Estilos para wishlist sin autenticación */
+.wishlist-no-auth-container {
+    text-align: center;
+    padding: 80px 30px;
+    background: linear-gradient(135deg, rgba(206, 89, 255, 0.05), rgba(255, 105, 180, 0.05));
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 2px solid var(--lila-pastel);
+    margin-top: 30px;
+}
+
+.icono-candado {
+    font-size: 5rem;
+    color: var(--lila-pastel);
+    margin-bottom: 20px;
+    opacity: 0.8;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.wishlist-no-auth-container h2 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--lila-pastel);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.wishlist-no-auth-container p {
+    color: var(--texto-suave);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.botones-auth {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.botones-auth .boton {
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.botones-auth .boton-gradiente {
+    background: linear-gradient(135deg, #ce59ff, #ff69b4);
+    color: white;
+    border: none;
+}
+
+.botones-auth .boton-gradiente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(206, 89, 255, 0.4);
+}
+
+.botones-auth .boton-secundario {
+    background: white;
+    color: var(--lila-pastel);
+    border: 2px solid var(--lila-pastel);
+}
+
+.botones-auth .boton-secundario:hover {
+    background: var(--lila-pastel);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.texto-secundario {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.texto-secundario a {
+    color: var(--lila-pastel);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.texto-secundario a:hover {
+    text-decoration: underline;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 /* Responsive para wishlist */

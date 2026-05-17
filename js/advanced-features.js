@@ -31,8 +31,18 @@ function inicializarSistemaResenas() {
 function cargarResenasProducto(productId) {
     // Cargar reseñas desde localStorage (en producción sería desde API)
     const resenas = obtenerResenasProducto(productId);
-    mostrarResenas(resenas);
+    mostrarResenas(resenas, productId);
     actualizarRatingPromedio(resenas);
+}
+
+function formatearPrecioCOP(valor) {
+    if (valor == null || valor === '') return '';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(Number(valor));
 }
 
 function obtenerResenasProducto(productId) {
@@ -40,7 +50,7 @@ function obtenerResenasProducto(productId) {
     return todasResenas[productId] || [];
 }
 
-function mostrarResenas(resenas) {
+function mostrarResenas(resenas, productId) {
     const contenedorResenas = document.querySelector('.resenas-container');
     if (!contenedorResenas) return;
 
@@ -78,6 +88,7 @@ function mostrarResenas(resenas) {
                 <button class="btn-util" onclick="marcarUtil(this)">
                     <i class="fas fa-thumbs-up"></i> Útil (${resena.util || 0})
                 </button>
+                ${esAdmin() ? `<button class="btn-eliminar-resena" onclick="eliminarResena('${productId}', ${resena.id})"><i class="fas fa-trash-alt"></i> Eliminar</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -90,11 +101,10 @@ function actualizarRatingPromedio(resenas) {
     const contenedorRating = document.querySelector('.rating');
 
     if (contenedorRating) {
-        contenedorRating.innerHTML = generarEstrellas(Math.round(promedio));
-        const spanRating = contenedorRating.querySelector('span');
-        if (spanRating) {
-            spanRating.textContent = `${promedio.toFixed(1)} (${resenas.length} reseñas)`;
-        }
+        contenedorRating.innerHTML = `
+            ${generarEstrellas(Math.round(promedio))}
+            <span>${promedio.toFixed(1)} (${resenas.length} reseñas)</span>
+        `;
     }
 }
 
@@ -143,6 +153,7 @@ function inicializarFormularioResena(productId) {
 
         guardarResena(productId, nuevaResena);
         mostrarNotificacion('¡Reseña publicada exitosamente!', 'success');
+        alert('Tu reseña se ha enviado correctamente. Gracias por tu opinión.');
 
         // Limpiar formulario
         this.reset();
@@ -161,6 +172,28 @@ function guardarResena(productId, resena) {
     }
     todasResenas[productId].unshift(resena); // Agregar al inicio
     localStorage.setItem('resenas', JSON.stringify(todasResenas));
+}
+
+function esAdmin() {
+    try {
+        const user = window.getUser ? window.getUser() : JSON.parse(localStorage.getItem('user') || 'null');
+        return user && user.role === 'admin';
+    } catch {
+        return false;
+    }
+}
+
+function eliminarResena(productId, reviewId) {
+    if (!esAdmin()) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar esta reseña?')) return;
+
+    const todasResenas = JSON.parse(localStorage.getItem('resenas') || '{}');
+    const productoResenas = todasResenas[productId] || [];
+    const filtradas = productoResenas.filter(r => String(r.id) !== String(reviewId));
+    todasResenas[productId] = filtradas;
+    localStorage.setItem('resenas', JSON.stringify(todasResenas));
+    mostrarNotificacion('Reseña eliminada correctamente', 'success');
+    cargarResenasProducto(productId);
 }
 
 function actualizarEstrellasSeleccionadas(estrellas, rating) {
@@ -227,6 +260,13 @@ function agregarBotonesWishlist() {
 }
 
 function toggleWishlist(productId) {
+    // Verificar si el usuario ha iniciado sesión
+    const token = localStorage.getItem('token');
+    if (!token) {
+        mostrarNotificacion('Debes iniciar sesión para usar la wishlist', 'warning');
+        return;
+    }
+
     const wishlist = obtenerWishlist();
     const index = wishlist.indexOf(productId);
 
@@ -273,6 +313,70 @@ function actualizarBotonesWishlist() {
             boton.classList.toggle('active', enWishlist);
         }
     });
+}
+
+// ===== CARGAR Y RENDERIZAR WISHLIST =====
+async function cargarWishlist() {
+    try {
+        const wishlist = obtenerWishlist();
+        const container = document.getElementById('wishlist-container');
+        const contadorProductos = document.getElementById('contador-productos');
+        const wishlistVacia = document.getElementById('wishlist-vacia');
+        
+        if (!container) return;
+
+        // Obtener todos los productos
+        const productos = await fetchProductos();
+        
+        // Filtrar productos que están en la wishlist
+        const productosWishlist = productos.filter(p => wishlist.includes(p.id));
+
+        // Actualizar contador
+        if (contadorProductos) {
+            contadorProductos.textContent = `${productosWishlist.length} producto${productosWishlist.length !== 1 ? 's' : ''} en tu wishlist`;
+        }
+
+        // Mostrar/ocultar sección vacía
+        if (wishlistVacia) {
+            wishlistVacia.style.display = productosWishlist.length === 0 ? 'block' : 'none';
+        }
+
+        // Limpiar contenedor
+        container.innerHTML = '';
+
+        // Renderizar productos
+        productosWishlist.forEach(producto => {
+            const tarjeta = document.createElement('div');
+            tarjeta.className = 'tarjeta-producto';
+            tarjeta.dataset.id = producto.id;
+            tarjeta.innerHTML = `
+                <div class="imagen-producto">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='img/placeholder.svg'">
+                </div>
+                <div class="contenido-tarjeta">
+                    <h3 class="nombre-producto">${producto.nombre}</h3>
+                    <div class="categoria-producto">${producto.categoria}</div>
+                    <p class="descripcion-producto">${producto.descripcion}</p>
+                    <div class="precio-producto">
+                        ${formatearPrecioCOP(producto.precio)}
+                    </div>
+                    <div class="botones-tarjeta">
+                        <button class="boton boton-carrito" onclick="agregarAlCarrito(${producto.id})">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+                <button class="btn-wishlist active" onclick="toggleWishlist(${producto.id})">
+                    <i class="fas fa-heart"></i>
+                </button>
+            `;
+            container.appendChild(tarjeta);
+        });
+
+        actualizarContadorWishlist();
+    } catch (error) {
+        console.error('Error cargando wishlist:', error);
+    }
 }
 
 // ===== INTEGRACIÓN CON REDES SOCIALES =====
@@ -377,8 +481,9 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     // Crear notificación
     const notificacion = document.createElement('div');
     notificacion.className = `notificacion notificacion-${tipo}`;
+    const icono = tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : tipo === 'warning' ? 'exclamation-triangle' : 'info-circle';
     notificacion.innerHTML = `
-        <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <i class="fas fa-${icono}"></i>
         <span>${mensaje}</span>
         <button class="cerrar-notificacion" onclick="this.parentElement.remove()">&times;</button>
     `;
