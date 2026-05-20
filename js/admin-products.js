@@ -25,13 +25,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     const user = getUser();
     document.getElementById('userDisplay').textContent = `👤 ${user.name}`;
 
-    // Cargar productos existentes
+    // Cargar productos y usuarios existentes
     loadProductos();
+    loadUsers();
 
-    // Manejar formulario
+    // Manejar formularios
     const productForm = document.getElementById('productForm');
     if (productForm) {
         productForm.addEventListener('submit', handleCreateProduct);
+    }
+
+    const userForm = document.getElementById('userForm');
+    if (userForm) {
+        userForm.addEventListener('submit', handleCreateUser);
     }
 
     const cancelEditButton = document.getElementById('cancelEditButton');
@@ -242,6 +248,104 @@ async function handleCreateProduct(e) {
         messageDiv.className = 'message error';
         messageDiv.textContent = `✗ ${error.message}`;
     }
+}
+
+async function handleCreateUser(e) {
+    e.preventDefault();
+    const token = getToken();
+    const messageDiv = document.getElementById('userMessage');
+
+    const userData = {
+        name: document.getElementById('userName').value.trim(),
+        email: document.getElementById('userEmail').value.trim(),
+        password: document.getElementById('userPassword').value,
+        role: document.getElementById('userRole').value
+    };
+
+    if (!userData.name || !userData.email || !userData.password || !userData.role) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = '✗ Todos los campos son requeridos';
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/admin/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const result = await parseResponse(response);
+        if (!response.ok) {
+            const errorMessage = result.data?.error || result.data || 'Error creando usuario';
+            throw new Error(errorMessage);
+        }
+
+        messageDiv.className = 'message success';
+        messageDiv.textContent = '✓ Usuario creado correctamente';
+        document.getElementById('userForm').reset();
+        loadUsers();
+    } catch (error) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = `✗ ${error.message}`;
+    }
+}
+
+async function loadUsers() {
+    try {
+        const response = await fetch(`${API_BASE}/admin/users`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+        if (!response.ok) throw new Error('Error cargando usuarios');
+        const users = await response.json();
+        displayUsers(users);
+    } catch (error) {
+        document.getElementById('usersList').innerHTML = `
+            <div class="no-products">
+                <p>Error cargando usuarios: ${error.message}</p>
+            </div>
+        `;
+    }
+}
+
+function displayUsers(users) {
+    const container = document.getElementById('usersList');
+    if (!users || users.length === 0) {
+        container.innerHTML = `
+            <div class="no-products">
+                <p>No hay usuarios registrados aún</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${users.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
 }
 
 async function deleteProduct(productId) {

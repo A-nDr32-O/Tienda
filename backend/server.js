@@ -242,6 +242,30 @@ app.post('/api/auth/register', (req, res) => {
   });
 });
 
+app.post('/api/admin/users', authMiddleware, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Permiso denegado' });
+  const { email, password, name, role } = req.body;
+  if (!email || !password || !name || !role) return res.status(400).json({ error: 'Faltan campos' });
+  const normalizedRole = role === 'admin' ? 'admin' : 'customer';
+  const hashed = bcrypt.hashSync(password, 10);
+  const stmt = 'INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)';
+  db.run(stmt, [email, hashed, name, normalizedRole], function(err) {
+    if (err) {
+      if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') return res.status(409).json({ error: 'Email ya registrado' });
+      return res.status(500).json({ error: 'Error creando usuario' });
+    }
+    res.status(201).json({ id: this.lastID, email, name, role: normalizedRole });
+  });
+});
+
+app.get('/api/admin/users', authMiddleware, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Permiso denegado' });
+  db.all('SELECT id, email, name, role FROM users ORDER BY role DESC, name ASC', [], (err, users) => {
+    if (err) return res.status(500).json({ error: 'Error cargando usuarios' });
+    res.json(users);
+  });
+});
+
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Faltan campos' });

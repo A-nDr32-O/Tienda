@@ -395,9 +395,10 @@ a {
     background-color: var(--fondo-claro);
     padding: 50px 10%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
     border-top: 1px solid var(--color-borde);
+    align-items: start;
 }
 
 .logo-pie {
@@ -569,6 +570,16 @@ a {
 
 .imagen-sobre {
     text-align: center;
+    width: 100%;
+}
+
+.imagen-sobre > img {
+    width: 100%;
+    max-width: 450px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 /* Estilos adicionales para la página "Sobre Nosotros" */
@@ -601,20 +612,27 @@ a {
 .galeria-nosotros {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 25px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .galeria-nosotros img {
     width: 100%;
-    height: 80px;
-    object-fit: cover;
+    height: 120px;
+    object-fit: contain;
+    background: var(--fondo-claro);
+    padding: 10px;
+    border: 1px solid var(--color-borde);
     border-radius: 8px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .galeria-nosotros img:hover {
     transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 /* Estadísticas */
@@ -624,6 +642,10 @@ a {
     gap: 30px;
     margin: 60px 0;
     text-align: center;
+
+    background: rgba(168, 129, 230, 0.1);
+    padding: 20px;
+    border-radius: 15px;
 }
 
 .estadistica-item {
@@ -635,16 +657,14 @@ a {
 }
 
 .estadistica-item h3 {
+    color: var(--lila-pastel);
     font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    font-family: 'Barlow Semi Condensed', sans-serif;
+    margin-bottom: 5px;
 }
 
 .estadistica-item p {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin: 0;
+    color: var(--texto-principal);
+    font-weight: 600;
 }
 
 /* Testimonios */

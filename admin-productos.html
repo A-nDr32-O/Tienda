@@ -34,7 +34,7 @@
         }
 
         .user-info span {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(158, 6, 174, 0.8);
         }
 
         .btn-logout {
@@ -79,9 +79,41 @@
             gap: 40px;
         }
 
+        .productos-list,
+        .users-list {
+            grid-column: 1 / -1;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 12px 15px;
+            border: 1px solid rgba(147, 112, 219, 0.3);
+            color: rgba(36, 60, 215, 0.9);
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .users-table thead {
+            background: rgba(147, 112, 219, 0.2);
+        }
+
+        .users-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
         @media (max-width: 768px) {
             .admin-content {
                 grid-template-columns: 1fr;
+            }
+            .productos-list,
+            .users-list {
+                grid-column: auto;
             }
         }
 
@@ -105,7 +137,7 @@
 
         .form-group label {
             display: block;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(158, 8, 175, 0.9);
             margin-bottom: 8px;
             font-weight: 500;
         }
@@ -349,6 +381,49 @@
                         <button type="button" id="cancelEditButton" class="btn-cancel" style="display: none;">Cancelar edición</button>
                     </div>
                 </form>
+            </div>
+
+            <div class="form-section">
+                <h2>Crear Usuario</h2>
+                <div id="userMessage" class="message"></div>
+
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="userName">Nombre:</label>
+                        <input type="text" id="userName" required placeholder="Nombre del usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Correo Electrónico:</label>
+                        <input type="email" id="userEmail" required placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPassword">Contraseña:</label>
+                        <input type="password" id="userPassword" required placeholder="Contraseña segura">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userRole">Rol:</label>
+                        <select id="userRole" required>
+                            <option value="customer">Usuario Normal</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" id="createUserButton">Crear Usuario</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="users-list form-section">
+                <h2>Usuarios registrados</h2>
+                <div id="usersList">
+                    <div class="no-products">
+                        <p>Cargando usuarios...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Lista de productos -->
