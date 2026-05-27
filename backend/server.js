@@ -362,6 +362,28 @@ app.post('/api/payments', authMiddleware, (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
-});
+const MAX_PORT_TRIES = 10;
+
+const startServer = (port, attempt = 0) => {
+  const server = app.listen(port, () => {
+    console.log(`Servidor backend corriendo en http://localhost:${port}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      if (attempt < MAX_PORT_TRIES && !process.env.PORT) {
+        const nextPort = port + 1;
+        console.warn(`Puerto ${port} ocupado. Intentando iniciar en ${nextPort}...`);
+        startServer(nextPort, attempt + 1);
+      } else {
+        console.error(`No se pudo iniciar el servidor: el puerto ${port} ya está en uso.`);
+        console.error('Usa una variable de entorno PORT distinta o cierra el proceso que ocupa ese puerto.');
+        process.exit(1);
+      }
+    } else {
+      throw err;
+    }
+  });
+};
+
+startServer(PORT);
